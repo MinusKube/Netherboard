@@ -1,0 +1,4 @@
+name: Netherboard
+version: 1.0
+author: MinusKube
+main: fr.minuskube.netherboard.bukkit.NetherboardPlugin

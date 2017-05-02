@@ -2,6 +2,10 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="netherboard-bukkit_main" target="1.8" />
+      <module name="netherboard-bukkit_test" target="1.8" />
+      <module name="netherboard-core_main" target="1.8" />
+      <module name="netherboard-core_test" target="1.8" />
       <module name="netherboard_main" target="1.8" />
       <module name="netherboard_test" target="1.8" />
     </bytecodeTargetLevel>

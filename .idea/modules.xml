@@ -3,8 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/netherboard.iml" filepath="$PROJECT_DIR$/.idea/modules/netherboard.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/netherboard_main.iml" filepath="$PROJECT_DIR$/.idea/modules/netherboard_main.iml" group="netherboard" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/netherboard_test.iml" filepath="$PROJECT_DIR$/.idea/modules/netherboard_test.iml" group="netherboard" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/netherboard-bukkit.iml" filepath="$PROJECT_DIR$/.idea/modules/netherboard-bukkit.iml" group="bukkit" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bukkit/netherboard-bukkit_main.iml" filepath="$PROJECT_DIR$/.idea/modules/bukkit/netherboard-bukkit_main.iml" group="bukkit" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bukkit/netherboard-bukkit_test.iml" filepath="$PROJECT_DIR$/.idea/modules/bukkit/netherboard-bukkit_test.iml" group="bukkit" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/netherboard-core.iml" filepath="$PROJECT_DIR$/.idea/modules/netherboard-core.iml" group="core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/netherboard-core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/netherboard-core_main.iml" group="core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/netherboard-core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/netherboard-core_test.iml" group="core" />
     </modules>
   </component>
 </project>
