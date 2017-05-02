@@ -4,7 +4,6 @@ import fr.minuskube.netherboard.Netherboard;
 import fr.minuskube.netherboard.api.PlayerBoard;
 import fr.minuskube.netherboard.bukkit.util.NMS;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -66,7 +65,7 @@ public class BPlayerBoard implements PlayerBoard {
         this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         this.objective.setDisplayName(name);
 
-        this.buffer.setDisplayName(ChatColor.RED + name);
+        this.buffer.setDisplayName(name);
 
         this.player.setScoreboard(this.scoreboard);
     }
