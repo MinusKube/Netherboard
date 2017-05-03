@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "1.2.4"
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
 }
 
 subprojects {
@@ -26,26 +26,32 @@ subprojects {
     }
 
     dependencies {
-        compile "org.slf4j:slf4j-api:1.7.25"
-        compile "org.slf4j:slf4j-simple:1.7.25"
+        compile 'org.slf4j:slf4j-api:1.7.25'
+        compile 'org.slf4j:slf4j-simple:1.7.25'
 
-        testCompile "junit:junit:4.12"
+        compile project(':core')
+
+        testCompile 'junit:junit:4.12'
     }
 }
 
 project(':bukkit') {
     repositories {
-        maven {
-            url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
-        }
-
-        maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots"
-        }
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 
     dependencies {
-        compile project(":core")
-        provided "org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT"
+        provided 'org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'
+    }
+}
+
+project(':sponge') {
+    repositories {
+        maven { url 'https://repo.spongepowered.org/maven' }
+    }
+
+    dependencies {
+        compile 'org.spongepowered:spongeapi:5.1.0'
     }
 }

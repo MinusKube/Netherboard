@@ -6,6 +6,8 @@
       <module name="netherboard-bukkit_test" target="1.8" />
       <module name="netherboard-core_main" target="1.8" />
       <module name="netherboard-core_test" target="1.8" />
+      <module name="netherboard-sponge_main" target="1.8" />
+      <module name="netherboard-sponge_test" target="1.8" />
       <module name="netherboard_main" target="1.8" />
       <module name="netherboard_test" target="1.8" />
     </bytecodeTargetLevel>

@@ -2,18 +2,18 @@ package fr.minuskube.netherboard.api;
 
 import java.util.Map;
 
-public interface PlayerBoard {
+public interface PlayerBoard<V, N, S> {
 
-    String get(int score);
+    V get(N score);
 
-    void set(String name, int score);
-    void remove(int score);
+    void set(V name, N score);
+    void remove(N score);
 
     void delete();
 
-    String getName();
-    void setName(String name);
+    S getName();
+    void setName(S name);
 
-    Map<Integer, String> getLines();
+    Map<N, V> getLines();
 
 }

@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BPlayerBoard implements PlayerBoard {
+public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BPlayerBoard.class);
 
@@ -71,7 +71,7 @@ public class BPlayerBoard implements PlayerBoard {
     }
 
     @Override
-    public String get(int score) {
+    public String get(Integer score) {
         if(this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
@@ -79,7 +79,7 @@ public class BPlayerBoard implements PlayerBoard {
     }
 
     @Override
-    public void set(String name, int score) {
+    public void set(String name, Integer score) {
         if(this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
@@ -158,7 +158,7 @@ public class BPlayerBoard implements PlayerBoard {
     }
 
     @Override
-    public void remove(int score) {
+    public void remove(Integer score) {
         if(this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 

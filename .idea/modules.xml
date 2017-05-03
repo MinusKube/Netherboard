@@ -9,6 +9,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/netherboard-core.iml" filepath="$PROJECT_DIR$/.idea/modules/netherboard-core.iml" group="core" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/netherboard-core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/netherboard-core_main.iml" group="core" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/netherboard-core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/netherboard-core_test.iml" group="core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/netherboard-sponge.iml" filepath="$PROJECT_DIR$/.idea/modules/netherboard-sponge.iml" group="sponge" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sponge/netherboard-sponge_main.iml" filepath="$PROJECT_DIR$/.idea/modules/sponge/netherboard-sponge_main.iml" group="sponge" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sponge/netherboard-sponge_test.iml" filepath="$PROJECT_DIR$/.idea/modules/sponge/netherboard-sponge_test.iml" group="sponge" />
     </modules>
   </component>
 </project>
