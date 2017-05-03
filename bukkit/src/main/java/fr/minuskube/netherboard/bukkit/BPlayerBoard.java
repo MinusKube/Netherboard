@@ -86,13 +86,19 @@ public class BPlayerBoard implements PlayerBoard {
         String oldName = this.lines.get(score);
 
         if(oldName != null) {
-            sendRemove(this.buffer, oldName, score);
-            this.buffer.getScore(name).setScore(score);
+            if(NMS.getVersion().getMajor().equals("1.7")) {
+                sendRemove(this.objective, oldName, score);
+                this.objective.getScore(name).setScore(score);
+            }
+            else {
+                sendRemove(this.buffer, oldName, score);
+                this.buffer.getScore(name).setScore(score);
 
-            swapBuffers();
+                swapBuffers();
 
-            sendRemove(this.buffer, oldName, score);
-            this.buffer.getScore(name).setScore(score);
+                sendRemove(this.buffer, oldName, score);
+                this.buffer.getScore(name).setScore(score);
+            }
         }
         else {
             this.objective.getScore(name).setScore(score);
