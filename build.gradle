@@ -6,14 +6,12 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'com.github.johnrengelman.shadow'
 
-    sourceCompatibility = 1.8
+    sourceCompatibility = '1.8'
 
     group 'fr.minuskube'
-    version '1.0'
+    version '1.0.0'
 
-    configurations {
-        provided
-    }
+    configurations { provided }
 
     sourceSets {
         main.compileClasspath += configurations.provided
