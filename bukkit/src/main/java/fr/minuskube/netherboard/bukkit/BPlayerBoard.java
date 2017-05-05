@@ -85,6 +85,9 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
         String oldName = this.lines.get(score);
 
+        if(oldName.equals(name))
+            return;
+
         if(oldName != null) {
             if(NMS.getVersion().getMajor().equals("1.7")) {
                 sendRemove(this.objective, oldName, score);
@@ -163,6 +166,9 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         String name = this.lines.get(score);
+
+        if(name == null)
+            return;
 
         this.scoreboard.resetScores(name);
         this.lines.remove(score);

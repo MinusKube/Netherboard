@@ -99,6 +99,9 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
         Text oldName = this.lines.get(score);
 
+        if(oldName.equals(name))
+            return;
+
         if(oldName != null) {
             this.buffer.removeScore(oldName);
             this.buffer.getOrCreateScore(name).setScore(score);
@@ -131,6 +134,9 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         Text name = this.lines.get(score);
+
+        if(name == null)
+            return;
 
         this.scoreboard.removeScores(name);
         this.lines.remove(score);
