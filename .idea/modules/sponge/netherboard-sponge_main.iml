@@ -11,8 +11,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-simple:1.7.25" level="project" />
-    <orderEntry type="module" module-name="netherboard-core_main" />
     <orderEntry type="library" name="Gradle: org.spongepowered:spongeapi:5.1.0" level="project" />
+    <orderEntry type="module" module-name="netherboard-core_main" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:17.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.2.4" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.3.2" level="project" />
