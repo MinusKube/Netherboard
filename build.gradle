@@ -29,6 +29,19 @@ subprojects {
 
         testCompile 'junit:junit:4.12'
     }
+
+    task copyJar(type: Copy, dependsOn: shadowJar) {
+        from shadowJar
+        into '../build'
+    }
+
+    compileJava.finalizedBy copyJar
+}
+
+project(':core') {
+    shadowJar {
+        archiveName = 'Netherboard-API-' + project.version + '.jar'
+    }
 }
 
 project(':bukkit') {
@@ -50,7 +63,7 @@ project(':bukkit') {
 
 project(':sponge') {
     shadowJar {
-        archiveName = 'Netherboard-Spigot-' + project.version + '.jar'
+        archiveName = 'Netherboard-Sponge-' + project.version + '.jar'
     }
 
     repositories {
@@ -58,7 +71,7 @@ project(':sponge') {
     }
 
     dependencies {
-        compile 'org.spongepowered:spongeapi:5.1.0'
+        provided 'org.spongepowered:spongeapi:5.1.0'
 
         compile project(':core')
     }
