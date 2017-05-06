@@ -99,7 +99,7 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
         Text oldName = this.lines.get(score);
 
-        if(oldName.equals(name))
+        if(name.equals(oldName))
             return;
 
         if(oldName != null) {
