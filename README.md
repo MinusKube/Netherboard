@@ -1,4 +1,4 @@
-# Netherboard (WORK IN PROGRESS!)
+# Netherboard
 
 Scoreboard API for your Minecraft Sponge and Bukkit Plugins.
 
@@ -14,3 +14,6 @@ Scoreboard API for your Minecraft Sponge and Bukkit Plugins.
 - Allow more characters per line (Using teams)
 - Add a javadoc
 - Improve this readme
+
+### Issues:
+If you have a problem with the API, or you want to request a feature, make an issue [here](https://github.com/MinusKube/netherboard/issues).
