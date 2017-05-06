@@ -15,5 +15,45 @@ Scoreboard API for your Minecraft Sponge and Bukkit Plugins.
 - Add a javadoc
 - Improve this readme
 
+### Examples:
+#### Bukkit
+
+Create a board:
+```java
+BPlayerBoard board = Netherboard.instance().createBoard(player, "My Scoreboard");
+```
+
+Create a board with your own Scoreboard object:
+```java
+BPlayerBoard board = Netherboard.instance().createBoard(player, scoreboard, "My Scoreboard");
+```
+
+Get a player's board:
+```java
+BPlayerBoard board = Netherboard.instance().getBoard(player);
+```
+
+When you have your board, you can do whatever you want with it:
+```java
+// Set a line
+// If there is already a line with this score, it will replace it.
+board.set("Test Score", 5);
+
+// Get a line from its score
+board.get(5);
+
+// Remove a line
+board.remove(5);
+
+// Change the name of the board
+board.setName("My New Scoreboard");
+
+// Delete the board
+board.delete();
+```
+
+#### Sponge
+Same thing than Bukkit, but the object is called `SPlayerBoard` and the methods requires `Text` objects instead of `String` ones.
+
 ### Issues:
 If you have a problem with the API, or you want to request a feature, make an issue [here](https://github.com/MinusKube/netherboard/issues).
