@@ -1,6 +1,7 @@
 # Netherboard
 
-Scoreboard API for your Minecraft Sponge and Bukkit Plugins.
+Scoreboard API for your Minecraft Sponge and Bukkit Plugins.  
+**You can use this as a Plugin, or just add it to your dependencies.**
 
 ## Features:
 - Works for all the **Bukkit** versions since **1.7**.
