@@ -13,8 +13,6 @@ Scoreboard API for your Minecraft Sponge and Bukkit Plugins.
   
 ## TODO:
 - Allow more characters per line (Using teams)
-- Add a javadoc
-- Improve this readme
 
 ## Examples:
 ### Bukkit
