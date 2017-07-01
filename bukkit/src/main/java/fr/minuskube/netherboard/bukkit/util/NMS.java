@@ -21,9 +21,14 @@ public class NMS {
 
     public static final Field PLAYER_SCORES;
 
+    public static final Constructor<?> PACKET_SCORE_REMOVE;
     public static final Constructor<?> PACKET_SCORE;
+
     public static final Constructor<?> SB_SCORE;
     public static final Method SB_SCORE_SET;
+
+    public static final Constructor<?> PACKET_OBJ;
+    public static final Constructor<?> PACKET_DISPLAY;
 
     public static final Field PLAYER_CONNECTION;
     public static final Method SEND_PACKET;
@@ -38,15 +43,23 @@ public class NMS {
 
         Field playerScores = null;
 
+        Constructor<?> packetScoreRemove = null;
         Constructor<?> packetScore = null;
+
         Constructor<?> sbScore = null;
         Method sbScoreSet = null;
+
+        Constructor<?> packetObj = null;
+        Constructor<?> packetDisplay = null;
 
         Field playerConnection = null;
         Method sendPacket = null;
 
         try {
             Class<?> packetScoreClass = getClass("PacketPlayOutScoreboardScore");
+            Class<?> packetDisplayClass = getClass("PacketPlayOutScoreboardDisplayObjective");
+            Class<?> packetObjClass = getClass("PacketPlayOutScoreboardObjective");
+
             Class<?> scoreClass = getClass("ScoreboardScore");
 
             Class<?> sbClass = getClass("Scoreboard");
@@ -59,15 +72,18 @@ public class NMS {
             playerScores = sbClass.getDeclaredField("playerScores");
             playerScores.setAccessible(true);
 
-            if(version.getMajor().equals("1.7")) {
+            sbScore = scoreClass.getConstructor(sbClass, objClass, String.class);
+            sbScoreSet = scoreClass.getMethod("setScore", int.class);
+
+            if(version.getMajor().equals("1.7"))
                 packetScore = packetScoreClass.getConstructor(scoreClass, int.class);
-                sbScore = scoreClass.getConstructor(sbClass, objClass, String.class);
-                sbScoreSet = scoreClass.getMethod("setScore", int.class);
-            }
             else {
-                packetScore = packetScoreClass.getConstructor(String.class, objClass);
+                packetScore = packetScoreClass.getConstructor(scoreClass);
+                packetScoreRemove = packetScoreClass.getConstructor(String.class, objClass);
             }
 
+            packetObj = packetObjClass.getConstructor(objClass, int.class);
+            packetDisplay = packetDisplayClass.getConstructor(int.class, objClass);
 
             playerConnection = playerClass.getField("playerConnection");
             sendPacket = playerConnectionClass.getMethod("sendPacket", packetClass);
@@ -77,9 +93,14 @@ public class NMS {
 
         PLAYER_SCORES = playerScores;
 
+        PACKET_SCORE_REMOVE = packetScoreRemove;
         PACKET_SCORE = packetScore;
+
         SB_SCORE = sbScore;
         SB_SCORE_SET = sbScoreSet;
+
+        PACKET_OBJ = packetObj;
+        PACKET_DISPLAY = packetDisplay;
 
         PLAYER_CONNECTION = playerConnection;
         SEND_PACKET = sendPacket;

@@ -5,7 +5,6 @@ import fr.minuskube.netherboard.api.PlayerBoard;
 import fr.minuskube.netherboard.bukkit.util.NMS;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.slf4j.Logger;
@@ -62,10 +61,12 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         if(this.buffer == null)
             this.buffer = this.scoreboard.registerNewObjective("bf" + subName, "dummy");
 
-        this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         this.objective.setDisplayName(name);
+        sendObjectiveCreate(this.objective);
+        sendObjective(this.objective);
 
         this.buffer.setDisplayName(name);
+        sendObjectiveCreate(this.buffer);
 
         this.player.setScoreboard(this.scoreboard);
     }
@@ -90,29 +91,29 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
         if(oldName != null) {
             if(NMS.getVersion().getMajor().equals("1.7")) {
-                sendRemove(this.objective, oldName, score);
-                this.objective.getScore(name).setScore(score);
+                sendScore(this.objective, oldName, score, true);
+                sendScore(this.objective, name, score, false);
             }
             else {
-                sendRemove(this.buffer, oldName, score);
-                this.buffer.getScore(name).setScore(score);
+                sendScore(this.buffer, oldName, score, true);
+                sendScore(this.buffer, name, score, false);
 
                 swapBuffers();
 
-                sendRemove(this.buffer, oldName, score);
-                this.buffer.getScore(name).setScore(score);
+                sendScore(this.buffer, oldName, score, true);
+                sendScore(this.buffer, name, score, false);
             }
         }
         else {
-            this.objective.getScore(name).setScore(score);
-            this.buffer.getScore(name).setScore(score);
+            sendScore(this.objective, name, score, false);
+            sendScore(this.buffer, name, score, false);
         }
 
         this.lines.put(score, name);
     }
 
     private void swapBuffers() {
-        this.buffer.setDisplaySlot(DisplaySlot.SIDEBAR);
+        sendObjective(this.buffer);
 
         Objective temp = this.buffer;
 
@@ -120,34 +121,86 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         this.objective = temp;
     }
 
-    private void sendRemove(Objective obj, String name, int score) {
+    private void sendObjectiveCreate(Objective obj) {
+        try {
+            Object objHandle = NMS.getHandle(obj);
+
+            Object packetObj = NMS.PACKET_OBJ.newInstance(
+                    objHandle,
+                    0
+            );
+
+            NMS.sendPacket(packetObj, player);
+        } catch(InstantiationException | IllegalAccessException
+                | InvocationTargetException | NoSuchMethodException e) {
+
+            LOGGER.error("Error while creating and sending display packet. (Unsupported Minecraft version?)", e);
+        }
+    }
+
+    private void sendObjective(Objective obj) {
+        try {
+            Object objHandle = NMS.getHandle(obj);
+
+            Object packet = NMS.PACKET_DISPLAY.newInstance(
+                    1,
+                    objHandle
+            );
+
+            NMS.sendPacket(packet, player);
+        } catch(InstantiationException | IllegalAccessException
+                | InvocationTargetException | NoSuchMethodException e) {
+
+            LOGGER.error("Error while creating and sending display packet. (Unsupported Minecraft version?)", e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void sendScore(Objective obj, String name, int score, boolean remove) {
         try {
             Object sbHandle = NMS.getHandle(scoreboard);
             Object objHandle = NMS.getHandle(obj);
 
+            Object sbScore = NMS.SB_SCORE.newInstance(
+                    sbHandle,
+                    objHandle,
+                    name
+            );
+
+            NMS.SB_SCORE_SET.invoke(sbScore, score);
+
             Map scores = (Map) NMS.PLAYER_SCORES.get(sbHandle);
-            ((Map) scores.get(name)).remove(objHandle);
+
+            if(remove)
+                ((Map) scores.get(name)).remove(objHandle);
+            else
+                ((Map) scores.getOrDefault(name, new HashMap())).put(objHandle, sbScore);
 
             switch(NMS.getVersion().getMajor()) {
                 case "1.7": {
-                    Object sbScore = NMS.SB_SCORE.newInstance(
-                            sbHandle,
-                            objHandle,
-                            name
+                    Object packet = NMS.PACKET_SCORE.newInstance(
+                            sbScore,
+                            remove ? 1 : 0
                     );
 
-                    NMS.SB_SCORE_SET.invoke(sbScore, score);
-
-                    Object packet = NMS.PACKET_SCORE.newInstance(sbScore, 1);
                     NMS.sendPacket(packet, player);
                     break;
                 }
 
                 default: {
-                    Object packet = NMS.PACKET_SCORE.newInstance(
-                            name,
-                            objHandle
-                    );
+                    Object packet;
+
+                    if(remove) {
+                        packet = NMS.PACKET_SCORE_REMOVE.newInstance(
+                                name,
+                                objHandle
+                        );
+                    }
+                    else {
+                        packet = NMS.PACKET_SCORE.newInstance(
+                                sbScore
+                        );
+                    }
 
                     NMS.sendPacket(packet, player);
                     break;
