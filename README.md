@@ -52,7 +52,8 @@ board.delete();
 ```
 
 ### Sponge
-Same thing than Bukkit, but the object is called `SPlayerBoard` and the methods requires `Text` objects instead of `String` ones.
+Same thing than Bukkit, but the object is called `SPlayerBoard` and the methods requires `Text` objects instead of `String` ones.  
+*NB: With Sponge, please do not create boards for different players with the same `scoreboard`.*
 
 ## Issues:
 If you have a problem with the API, or you want to request a feature, make an issue [here](https://github.com/MinusKube/netherboard/issues).
