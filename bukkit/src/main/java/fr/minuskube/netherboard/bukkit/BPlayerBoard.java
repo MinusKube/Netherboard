@@ -171,10 +171,16 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
             Map scores = (Map) NMS.PLAYER_SCORES.get(sbHandle);
 
-            if(remove)
-                ((Map) scores.get(name)).remove(objHandle);
-            else
-                ((Map) scores.getOrDefault(name, new HashMap())).put(objHandle, sbScore);
+            if(remove) {
+                if(scores.containsKey(name))
+                    ((Map) scores.get(name)).remove(objHandle);
+            }
+            else {
+                if(!scores.containsKey(name))
+                    scores.put(name, new HashMap());
+
+                ((Map) scores.get(name)).put(objHandle, sbScore);
+            }
 
             switch(NMS.getVersion().getMajor()) {
                 case "1.7": {
