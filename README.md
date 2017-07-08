@@ -72,8 +72,8 @@ repositories {
 dependencies {
     compile 'fr.minuskube:netherboard-bukkit:1.0.2'
     
-    # Or if you use Sponge:
-    # compile 'fr.minuskube:netherboard-sponge:1.0.2'
+    // Or if you use Sponge:
+    // compile 'fr.minuskube:netherboard-sponge:1.0.2'
 }
 ```
 
