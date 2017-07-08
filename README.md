@@ -55,5 +55,43 @@ board.delete();
 Same thing than Bukkit, but the object is called `SPlayerBoard` and the methods requires `Text` objects instead of `String` ones.  
 *NB: With Sponge, please do not create boards for different players with the same `scoreboard`.*
 
+## Usage
+To use the Netherboard API, either:
+  - put it in the `plugins` folder of your server, add it to your dependencies in your plugin.yml (e.g. `depend: [SmartInvs]`) and add it to the dependencies in your IDE.
+  - add it to the dependencies in your IDE and include it in your plugin jar.
+
+You can download the latest version on the [Releases page](https://github.com/MinusKube/Netherboard/releases) on Github.
+
+You can also use a build system:
+### Gradle
+```gradle
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'fr.minuskube:netherboard-bukkit:1.0.2'
+    
+    # Or if you use Sponge:
+    # compile 'fr.minuskube:netherboard-sponge:1.0.2'
+}
+```
+
+### Maven
+```xml
+<dependency>
+  <groupId>fr.minuskube</groupId>
+  <artifactId>netherboard-bukkit</artifactId>
+  
+  <!--
+  Or if you use Sponge:
+  
+  <artifactId>netherboard-sponge</artifactId>
+  -->
+  
+  <version>1.0.2</version>
+</dependency>
+```
+
 ## Issues:
 If you have a problem with the API, or you want to request a feature, make an issue [here](https://github.com/MinusKube/netherboard/issues).
