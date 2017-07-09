@@ -58,7 +58,10 @@ public class Netherboard {
      * @param player the player
      */
     public void deleteBoard(Player player) {
-        boards.remove(player);
+        if(boards.get(player) != null) {
+            SPlayerBoard board = boards.remove(player);
+            board.delete();
+        }
     }
 
     /**
