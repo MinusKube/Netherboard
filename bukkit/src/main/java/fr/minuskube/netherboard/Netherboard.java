@@ -42,8 +42,7 @@ public class Netherboard {
      * @return              the newly created board
      */
     public BPlayerBoard createBoard(Player player, Scoreboard scoreboard, String name) {
-        if(boards.containsKey(player))
-            boards.get(player).delete();
+        deleteBoard(player);
 
         BPlayerBoard board = new BPlayerBoard(player, scoreboard, name);
 

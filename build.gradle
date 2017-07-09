@@ -11,7 +11,7 @@ subprojects {
     sourceCompatibility = '1.8'
 
     group 'fr.minuskube'
-    version '1.0.4'
+    version '1.0.5'
 
     configurations { provided }
 

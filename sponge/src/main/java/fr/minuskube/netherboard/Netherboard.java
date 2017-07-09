@@ -43,8 +43,7 @@ public class Netherboard {
      * @return              the newly created board
      */
     public SPlayerBoard createBoard(Player player, Scoreboard scoreboard, Text name) {
-        if(boards.containsKey(player))
-            boards.get(player).delete();
+        deleteBoard(player);
 
         SPlayerBoard board = new SPlayerBoard(player, scoreboard, name);
 

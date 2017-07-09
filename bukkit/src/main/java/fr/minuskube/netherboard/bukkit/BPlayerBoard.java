@@ -62,11 +62,11 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
             this.buffer = this.scoreboard.registerNewObjective("bf" + subName, "dummy");
 
         this.objective.setDisplayName(name);
-        sendObjectiveCreate(this.objective);
-        sendObjective(this.objective);
+        sendObjective(this.objective, ObjectiveMode.CREATE);
+        sendObjectiveDisplay(this.objective);
 
         this.buffer.setDisplayName(name);
-        sendObjectiveCreate(this.buffer);
+        sendObjective(this.buffer, ObjectiveMode.CREATE);
 
         this.player.setScoreboard(this.scoreboard);
     }
@@ -113,7 +113,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
     }
 
     private void swapBuffers() {
-        sendObjective(this.buffer);
+        sendObjectiveDisplay(this.buffer);
 
         Objective temp = this.buffer;
 
@@ -121,24 +121,24 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         this.objective = temp;
     }
 
-    private void sendObjectiveCreate(Objective obj) {
+    private void sendObjective(Objective obj, ObjectiveMode mode) {
         try {
             Object objHandle = NMS.getHandle(obj);
 
             Object packetObj = NMS.PACKET_OBJ.newInstance(
                     objHandle,
-                    0
+                    mode.ordinal()
             );
 
             NMS.sendPacket(packetObj, player);
         } catch(InstantiationException | IllegalAccessException
                 | InvocationTargetException | NoSuchMethodException e) {
 
-            LOGGER.error("Error while creating and sending display packet. (Unsupported Minecraft version?)", e);
+            LOGGER.error("Error while creating and sending objective packet. (Unsupported Minecraft version?)", e);
         }
     }
 
-    private void sendObjective(Objective obj) {
+    private void sendObjectiveDisplay(Objective obj) {
         try {
             Object objHandle = NMS.getHandle(obj);
 
@@ -240,6 +240,9 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
         Netherboard.instance().removeBoard(player);
 
+        sendObjective(this.objective, ObjectiveMode.REMOVE);
+        sendObjective(this.buffer, ObjectiveMode.REMOVE);
+
         this.objective.unregister();
         this.objective = null;
 
@@ -273,6 +276,9 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
         this.objective.setDisplayName(name);
         this.buffer.setDisplayName(name);
+
+        sendObjective(this.objective, ObjectiveMode.UPDATE);
+        sendObjective(this.buffer, ObjectiveMode.UPDATE);
     }
 
     public Player getPlayer() {
@@ -280,5 +286,8 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
     }
 
     public Scoreboard getScoreboard() { return scoreboard; }
+
+
+    private enum ObjectiveMode { CREATE, REMOVE, UPDATE }
 
 }
