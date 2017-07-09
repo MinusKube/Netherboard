@@ -6,5 +6,5 @@ import org.spongepowered.api.plugin.Plugin;
         description = "Scoreboard API for your Sponge Plugins.",
         authors = "MinusKube",
         url = "https://github.com/MinusKube/netherboard",
-        version = "1.0.3")
+        version = "1.0.4")
 public class NetherboardPlugin {}
