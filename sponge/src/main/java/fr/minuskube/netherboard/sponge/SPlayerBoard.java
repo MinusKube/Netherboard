@@ -147,7 +147,7 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
         if(this.deleted)
             return;
 
-        Netherboard.instance().deleteBoard(player);
+        Netherboard.instance().removeBoard(player);
 
         this.scoreboard.removeObjective(this.objective);
         this.objective = null;

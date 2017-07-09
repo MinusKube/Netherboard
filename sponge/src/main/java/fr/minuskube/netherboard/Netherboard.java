@@ -58,10 +58,18 @@ public class Netherboard {
      * @param player the player
      */
     public void deleteBoard(Player player) {
-        if(boards.get(player) != null) {
-            SPlayerBoard board = boards.remove(player);
-            board.delete();
-        }
+        if(boards.containsKey(player))
+            boards.get(player).delete();
+    }
+
+    /**
+     * Removes the board of a player from the boards map.<br />
+     * <b>WARNING: Do not use this to delete the board of a player!</b>
+     *
+     * @param player the player
+     */
+    public void removeBoard(Player player) {
+        boards.remove(player);
     }
 
     /**
