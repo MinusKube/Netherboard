@@ -63,7 +63,7 @@ public class Netherboard {
     }
 
     /**
-     * Removes the board of a player from the boards map.<br />
+     * Removes the board of a player from the boards map.<br>
      * <b>WARNING: Do not use this to delete the board of a player!</b>
      *
      * @param player the player
