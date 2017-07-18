@@ -52,7 +52,7 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
         String subName = player.getName().length() <= 14
                 ? player.getName()
-                : player.getName().substring(0, 16);
+                : player.getName().substring(0, 14);
 
         this.objective = this.scoreboard.getObjective("sb" + subName)
                 .orElseGet(() -> {

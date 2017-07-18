@@ -70,10 +70,10 @@ repositories {
 }
 
 dependencies {
-    compile 'fr.minuskube:netherboard-bukkit:1.0.4'
+    compile 'fr.minuskube:netherboard-bukkit:1.0.6'
     
     // Or if you use Sponge:
-    // compile 'fr.minuskube:netherboard-sponge:1.0.4'
+    // compile 'fr.minuskube:netherboard-sponge:1.0.6'
 }
 ```
 
@@ -89,7 +89,7 @@ dependencies {
   <artifactId>netherboard-sponge</artifactId>
   -->
   
-  <version>1.0.4</version>
+  <version>1.0.6</version>
 </dependency>
 ```
 
