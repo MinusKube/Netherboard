@@ -4,14 +4,14 @@ plugins {
 
 subprojects {
     apply plugin: 'java'
-    apply plugin: 'com.github.johnrengelman.shadow'
     apply plugin: 'maven'
     apply plugin: 'signing'
+    apply plugin: 'com.github.johnrengelman.shadow'
 
     sourceCompatibility = '1.8'
 
     group 'fr.minuskube'
-    version '1.0.6'
+    version '2.0.0'
 
     configurations { provided }
 
@@ -31,6 +31,8 @@ subprojects {
 
         testCompile 'junit:junit:4.12'
     }
+
+    clean.doLast { file('../build').deleteDir() }
 
     task javadocJar(type: Jar) {
         classifier = 'javadoc'
@@ -98,50 +100,5 @@ subprojects {
                 }
             }
         }
-    }
-}
-
-project(':core') {
-    shadowJar {
-        archiveName = 'Netherboard-API-' + project.version + '.jar'
-    }
-
-    archivesBaseName = 'netherboard-core'
-}
-
-project(':bukkit') {
-    shadowJar {
-        archiveName = 'Netherboard-Bukkit-' + project.version + '.jar'
-    }
-
-    archivesBaseName = 'netherboard-bukkit'
-
-    repositories {
-        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    }
-
-    dependencies {
-        provided 'org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'
-
-        compile project(':core')
-    }
-}
-
-project(':sponge') {
-    shadowJar {
-        archiveName = 'Netherboard-Sponge-' + project.version + '.jar'
-    }
-
-    archivesBaseName = 'netherboard-sponge'
-
-    repositories {
-        maven { url 'https://repo.spongepowered.org/maven' }
-    }
-
-    dependencies {
-        provided 'org.spongepowered:spongeapi:5.1.0'
-
-        compile project(':core')
     }
 }

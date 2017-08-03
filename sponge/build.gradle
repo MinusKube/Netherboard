@@ -1,0 +1,15 @@
+shadowJar {
+    archiveName = 'Netherboard-Sponge-' + project.version + '.jar'
+}
+
+archivesBaseName = 'netherboard-sponge'
+
+repositories {
+    maven { url 'https://repo.spongepowered.org/maven' }
+}
+
+dependencies {
+    provided 'org.spongepowered:spongeapi:5.1.0'
+
+    compile project(':core')
+}
