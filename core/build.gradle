@@ -1,5 +1,0 @@
-shadowJar {
-    archiveName = 'Netherboard-API-' + project.version + '.jar'
-}
-
-archivesBaseName = 'netherboard-core'

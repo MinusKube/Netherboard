@@ -2,13 +2,20 @@ package fr.minuskube.netherboard.api;
 
 import java.util.Map;
 
-public interface PlayerBoard<V, N, S> {
+/**
+ * Represents a Player's Scorebard
+ *
+ * @param <V> The type of a line <b>V</b>alue
+ * @param <S> The type of a line <b>S</b>core
+ * @param <N> The type of the board <b>N</b>ame
+ */
+public interface PlayerBoard<V, S, N> {
 
     /**
-     * Gets the name of the line from its score.
+     * Gets the value of the line from its score.
      *
      * @param score the score of the line
-     * @return      the name of the line, or null if the line doesn't exist.
+     * @return      the value of the line, or null if the line doesn't exist.
      */
     V get(N score);
 

@@ -2,103 +2,110 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '1.2.4'
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'maven'
-    apply plugin: 'signing'
-    apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
-    sourceCompatibility = '1.8'
+sourceCompatibility = '1.8'
 
-    group 'fr.minuskube'
-    version '2.0.0'
+group 'fr.minuskube'
+version '1.0.6'
 
-    configurations { provided }
+configurations { provided }
 
-    sourceSets {
-        main.compileClasspath += configurations.provided
-        test.compileClasspath += configurations.provided
-        test.runtimeClasspath += configurations.provided
-    }
+sourceSets {
+    main.compileClasspath += configurations.provided
+    test.compileClasspath += configurations.provided
+    test.runtimeClasspath += configurations.provided
+}
 
+repositories {
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://repo.spongepowered.org/maven' }
+
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'org.slf4j:slf4j-simple:1.7.25'
+
+    provided 'org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'
+    provided 'org.spongepowered:spongeapi:5.1.0'
+
+    testCompile 'junit:junit:4.12'
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts { archives javadocJar, sourcesJar }
+
+task copyJar(type: Copy, dependsOn: shadowJar) {
+    from shadowJar
+    into '../build'
+}
+
+shadowJar.finalizedBy copyJar
+
+signing {
+    sign configurations.archives
+}
+
+/*uploadArchives {
     repositories {
-        mavenCentral()
-    }
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-    dependencies {
-        compile 'org.slf4j:slf4j-api:1.7.25'
-        compile 'org.slf4j:slf4j-simple:1.7.25'
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
 
-        testCompile 'junit:junit:4.12'
-    }
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
 
-    clean.doLast { file('../build').deleteDir() }
+            pom.project {
+                name 'Netherboard'
+                packaging 'jar'
+                description 'Scoreboard API for your Minecraft Sponge and Bukkit Plugins.'
+                url 'https://github.com/MinusKube/Netherboard'
 
-    task javadocJar(type: Jar) {
-        classifier = 'javadoc'
-        from javadoc
-    }
-
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    artifacts { archives javadocJar, sourcesJar }
-
-
-    task copyJar(type: Copy, dependsOn: shadowJar) {
-        from shadowJar
-        into '../build'
-    }
-
-    shadowJar.finalizedBy copyJar
-
-    signing {
-        sign configurations.archives
-    }
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                scm {
+                    connection 'scm:git:git://github.com/MinusKube/Netherboard.git'
+                    developerConnection 'scm:git:ssh://github.com:MinusKube/Netherboard.git'
+                    url 'http://github.com/MinusKube/Netherboard/tree/master'
                 }
 
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                licenses {
+                    license {
+                        name 'GNU General Public License v3.0'
+                        url 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                    }
                 }
 
-                pom.project {
-                    name 'Netherboard'
-                    packaging 'jar'
-                    description 'Scoreboard API for your Minecraft Sponge and Bukkit Plugins.'
-                    url 'https://github.com/MinusKube/Netherboard'
-
-                    scm {
-                        connection 'scm:git:git://github.com/MinusKube/Netherboard.git'
-                        developerConnection 'scm:git:ssh://github.com:MinusKube/Netherboard.git'
-                        url 'http://github.com/MinusKube/Netherboard/tree/master'
-                    }
-
-                    licenses {
-                        license {
-                            name 'GNU General Public License v3.0'
-                            url 'https://www.gnu.org/licenses/gpl-3.0.en.html'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'minuskube'
-                            name 'MinusKube'
-                            email 'minuskube@gmail.com'
-                        }
+                developers {
+                    developer {
+                        id 'minuskube'
+                        name 'MinusKube'
+                        email 'minuskube@gmail.com'
                     }
                 }
             }
         }
     }
+}*/
+
+shadowJar {
+    archiveName = 'Netherboard-' + project.version + '.jar'
+    archivesBaseName = 'netherboard'
 }
