@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 
 public class BlinkTextAnimation extends AbstractTextAnimation {
 
+    // TODO: Add the real properties (basically, the 2 text frames)
     public static final Property<BlinkTextAnimation, String> TEST_PROPERTY = new Property<>();
 
     private byte state = 0;
