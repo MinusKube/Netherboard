@@ -3,13 +3,9 @@ package fr.minuskube.netherboard.api;
 import java.util.Map;
 
 /**
- * Represents a Player's Scorebard
- *
- * @param <V> The type of a line <b>V</b>alue
- * @param <S> The type of a line <b>S</b>core
- * @param <N> The type of the board <b>N</b>ame
+ * Represents a Player's Scorebard.
  */
-public interface PlayerBoard<V, S, N> {
+public interface PlayerBoard {
 
     /**
      * Gets the value of the line from its score.
@@ -17,7 +13,7 @@ public interface PlayerBoard<V, S, N> {
      * @param score the score of the line
      * @return      the value of the line, or null if the line doesn't exist.
      */
-    V get(N score);
+    String get(int score);
 
     /**
      * Sets a line with its name and its score.
@@ -26,14 +22,14 @@ public interface PlayerBoard<V, S, N> {
      * @param name  the name of the line
      * @param score the score of the line
      */
-    void set(V name, N score);
+    void set(String name, int score);
 
     /**
      * Removes a line from its score.
      *
      * @param score the score of the line to remove
      */
-    void remove(N score);
+    void remove(int score);
 
     /**
      * Totally deletes the board, after this, you can't use this instance again,
@@ -46,20 +42,20 @@ public interface PlayerBoard<V, S, N> {
      *
      * @return the name of the board
      */
-    S getName();
+    String getName();
 
     /**
      * Sets the name of the board.
      *
      * @param name the new name of the board
      */
-    void setName(S name);
+    void setName(String name);
 
     /**
      * Gets the current lines of the board.
      *
      * @return the lines of the board
      */
-    Map<N, V> getLines();
+    Map<Integer, String> getLines();
 
 }

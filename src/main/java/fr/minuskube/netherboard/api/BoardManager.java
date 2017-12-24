@@ -16,35 +16,31 @@ import java.util.Optional;
  *      <li>or other, depending of the implementation</li>
  *  </ul>
  * </p>
- *
- * @param <V> The type of a board's line <b>V</b>alue
- * @param <S> The type of a board's line <b>S</b>core
- * @param <N> The type of a board <b>N</b>ame
  */
-public interface BoardProvider<V, S, N> {
+public interface BoardManager {
 
     /**
      * Creates a board and assign it to the given player.
      *
-     * @param player the player, see {@link BoardProvider} for more infos
+     * @param player the player, see {@link BoardManager} for more infos
      * @return the newly created board
      */
-    PlayerBoard<V, S, N> newBoard(Object player);
+    PlayerBoard newBoard(Object player);
 
     /**
      * Gets the player board, if the player has one.
      *
-     * @param player the player, see {@link BoardProvider} for more infos
+     * @param player the player, see {@link BoardManager} for more infos
      * @return an <code>Optional</code> containing the player's board,
      *         or <code>Optional.empty()</code> if the player doesn't have any
      */
-    Optional<PlayerBoard<V, S, N>> getBoard(Object player);
+    Optional<PlayerBoard> getBoard(Object player);
 
     /**
      * Checks if the player has a board.<br>
      * Similar to <code>getBoard(player).isPresent()</code>.
      *
-     * @param player the player, see {@link BoardProvider} for more infos
+     * @param player the player, see {@link BoardManager} for more infos
      * @return <code>true</code> if the player has a board
      */
     boolean hasBoard(Object player);
@@ -52,7 +48,7 @@ public interface BoardProvider<V, S, N> {
     /**
      * Deletes the player board.
      *
-     * @param player the player, see {@link BoardProvider} for more infos
+     * @param player the player, see {@link BoardManager} for more infos
      * @return <code>true</code> if the board has been deleted successfully,
      *         or <code>false</code> if the player doesn't have any board
      */

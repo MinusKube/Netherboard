@@ -1,6 +1,7 @@
 package fr.minuskube.netherboard.api.impl;
 
-import fr.minuskube.netherboard.api.BoardProvider;
+import com.google.common.base.Preconditions;
+import fr.minuskube.netherboard.api.BoardManager;
 import fr.minuskube.netherboard.api.PlayerBoard;
 
 import java.util.HashMap;
@@ -8,23 +9,23 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class AbstractBoardProvider<V, S, N> implements BoardProvider<V, S, N> {
+public abstract class AbstractBoardManager implements BoardManager {
 
-    protected Map<UUID, PlayerBoard<V, S, N>> boards = new HashMap<>();
+    protected Map<UUID, PlayerBoard> boards = new HashMap<>();
 
     @Override
-    public PlayerBoard<V, S, N> newBoard(Object player) {
+    public PlayerBoard newBoard(Object player) {
         deleteBoard(player);
 
         UUID uuid = getUniqueId(player);
-        PlayerBoard<V, S, N> board = createBoard(uuid);
+        PlayerBoard board = createBoard(uuid);
 
         boards.put(uuid, board);
         return board;
     }
 
     @Override
-    public Optional<PlayerBoard<V, S, N>> getBoard(Object player) {
+    public Optional<PlayerBoard> getBoard(Object player) {
         UUID uuid = getUniqueId(player);
         return Optional.ofNullable(boards.get(uuid));
     }
@@ -37,7 +38,7 @@ public abstract class AbstractBoardProvider<V, S, N> implements BoardProvider<V,
     @Override
     public boolean deleteBoard(Object player) {
         UUID uuid = getUniqueId(player);
-        Optional<PlayerBoard<V, S, N>> board = getBoard(uuid);
+        Optional<PlayerBoard> board = getBoard(uuid);
 
         if(!board.isPresent())
             return false;
@@ -47,14 +48,16 @@ public abstract class AbstractBoardProvider<V, S, N> implements BoardProvider<V,
         return true;
     }
 
-    protected abstract PlayerBoard<V, S, N> createBoard(UUID uuid);
+    protected abstract PlayerBoard createBoard(UUID uuid);
 
     protected UUID getUniqueId(Object player) {
+        Preconditions.checkNotNull(player, "The given player must not be null.");
+
         if(player instanceof UUID)
             return (UUID) player;
 
         throw new IllegalArgumentException("The given player type is not supported. " +
-                "It must be at least one these types: Player, UUID, String (the player's name)");
+                "It must be one of these types: UUID");
     }
 
 }
