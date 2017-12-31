@@ -1,4 +1,4 @@
-package fr.minuskube.netherboard.api.text;
+package fr.minuskube.netherboard.text;
 
 import java.util.HashMap;
 import java.util.Map;

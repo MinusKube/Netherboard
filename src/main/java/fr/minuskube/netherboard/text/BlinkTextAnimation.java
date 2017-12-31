@@ -1,23 +1,26 @@
-package fr.minuskube.netherboard.api.text;
+package fr.minuskube.netherboard.text;
 
 import com.google.common.collect.ImmutableMap;
 
 public class BlinkTextAnimation extends AbstractTextAnimation {
 
-    // TODO: Add the real properties (basically, the 2 text frames)
-    public static final Property<BlinkTextAnimation, String> TEST_PROPERTY = new Property<>();
+    public static final Property<BlinkTextAnimation, String> FIRST_FRAME_PROPERTY = new Property<>();
+    public static final Property<BlinkTextAnimation, String> SECOND_FRAME_PROPERTY = new Property<>();
 
     private byte state = 0;
 
     protected BlinkTextAnimation() {
         super(20, ImmutableMap.of(
-                TEST_PROPERTY, "Potato"
+                FIRST_FRAME_PROPERTY, "Potato",
+                SECOND_FRAME_PROPERTY, ""
         ));
     }
 
     @Override
     public String getCurrentText() {
-        return state == 0 ? getProperty(TEST_PROPERTY) : "";
+        return state == 0
+                ? getProperty(FIRST_FRAME_PROPERTY)
+                : getProperty(SECOND_FRAME_PROPERTY);
     }
 
     @Override

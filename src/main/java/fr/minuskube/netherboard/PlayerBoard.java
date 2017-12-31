@@ -1,4 +1,6 @@
-package fr.minuskube.netherboard.api;
+package fr.minuskube.netherboard;
+
+import fr.minuskube.netherboard.line.BoardLine;
 
 import java.util.Map;
 
@@ -8,21 +10,21 @@ import java.util.Map;
 public interface PlayerBoard {
 
     /**
-     * Gets the value of the line from its score.
+     * Gets the line at a given score.
      *
      * @param score the score of the line
-     * @return      the value of the line, or null if the line doesn't exist.
+     * @return      the line, or null if the line doesn't exist.
      */
-    String get(int score);
+    BoardLine get(int score);
 
     /**
      * Sets a line with its name and its score.
      * This will update the line if it already exists, and create it if it doesn't.
      *
-     * @param name  the name of the line
+     * @param line  the line
      * @param score the score of the line
      */
-    void set(String name, int score);
+    void set(BoardLine line, int score);
 
     /**
      * Removes a line from its score.
@@ -42,20 +44,20 @@ public interface PlayerBoard {
      *
      * @return the name of the board
      */
-    String getName();
+    BoardLine getName();
 
     /**
      * Sets the name of the board.
      *
-     * @param name the new name of the board
+     * @param nameLine the new name of the board
      */
-    void setName(String name);
+    void setName(BoardLine nameLine);
 
     /**
      * Gets the current lines of the board.
      *
      * @return the lines of the board
      */
-    Map<Integer, String> getLines();
+    Map<Integer, BoardLine> getLines();
 
 }

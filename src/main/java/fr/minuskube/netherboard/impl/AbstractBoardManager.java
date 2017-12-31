@@ -1,8 +1,8 @@
-package fr.minuskube.netherboard.api.impl;
+package fr.minuskube.netherboard.impl;
 
 import com.google.common.base.Preconditions;
-import fr.minuskube.netherboard.api.BoardManager;
-import fr.minuskube.netherboard.api.PlayerBoard;
+import fr.minuskube.netherboard.BoardManager;
+import fr.minuskube.netherboard.PlayerBoard;
 
 import java.util.HashMap;
 import java.util.Map;

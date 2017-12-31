@@ -1,4 +1,4 @@
-package fr.minuskube.netherboard.api.text;
+package fr.minuskube.netherboard.text;
 
 import com.google.common.collect.ImmutableMap;
 

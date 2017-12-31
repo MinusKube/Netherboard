@@ -1,4 +1,4 @@
-package fr.minuskube.netherboard.api;
+package fr.minuskube.netherboard;
 
 import java.util.Optional;
 

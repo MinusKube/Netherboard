@@ -10,7 +10,7 @@ apply plugin: 'signing'
 sourceCompatibility = '1.8'
 
 group 'fr.minuskube'
-version '1.0.6'
+version '2.0.0'
 
 configurations { provided }
 
@@ -31,6 +31,8 @@ repositories {
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'org.slf4j:slf4j-simple:1.7.25'
+
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.40'
 
     provided 'org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'
     provided 'org.spongepowered:spongeapi:5.1.0'

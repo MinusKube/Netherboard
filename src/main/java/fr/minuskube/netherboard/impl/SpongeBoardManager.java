@@ -1,13 +1,13 @@
-package fr.minuskube.netherboard.api.impl;
+package fr.minuskube.netherboard.impl;
 
 import com.google.common.base.Preconditions;
-import fr.minuskube.netherboard.api.PlayerBoard;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import fr.minuskube.netherboard.PlayerBoard;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
 
 import java.util.UUID;
 
-public class BukkitBoardManager extends AbstractBoardManager {
+public class SpongeBoardManager extends AbstractBoardManager {
 
     @Override
     protected PlayerBoard createBoard(UUID uuid) {
@@ -23,12 +23,10 @@ public class BukkitBoardManager extends AbstractBoardManager {
         if(player instanceof Player)
             return ((Player) player).getUniqueId();
         if(player instanceof String) {
-            Player bukkitPlayer = Bukkit.getPlayer((String) player);
+            Player spongePlayer = Sponge.getServer().getPlayer((String) player)
+                    .orElseThrow(() -> new IllegalArgumentException("The given name doesn't match any online player."));
 
-            if(bukkitPlayer == null)
-                throw new IllegalArgumentException("The given name doesn't match any online player.");
-
-            return bukkitPlayer.getUniqueId();
+            return spongePlayer.getUniqueId();
         }
 
         throw new IllegalArgumentException("The given player type is not supported. " +
