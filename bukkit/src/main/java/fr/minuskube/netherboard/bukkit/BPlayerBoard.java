@@ -196,6 +196,18 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
                     break;
                 }
 
+                case "1.13": {
+                    Object packet = NMS.PACKET_SCORE.newInstance(
+                            remove ? NMS.ENUM_SCORE_ACTION_REMOVE : NMS.ENUM_SCORE_ACTION_CHANGE,
+                            obj.getName(),
+                            name,
+                            score
+                    );
+
+                    NMS.sendPacket(packet, player);
+                    break;
+                }
+
                 default: {
                     Object packet;
 

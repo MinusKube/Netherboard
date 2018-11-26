@@ -24,6 +24,9 @@ public class NMS {
     public static final Constructor<?> PACKET_SCORE_REMOVE;
     public static final Constructor<?> PACKET_SCORE;
 
+    public static final Object ENUM_SCORE_ACTION_CHANGE;
+    public static final Object ENUM_SCORE_ACTION_REMOVE;
+
     public static final Constructor<?> SB_SCORE;
     public static final Method SB_SCORE_SET;
 
@@ -46,6 +49,9 @@ public class NMS {
         Constructor<?> packetScoreRemove = null;
         Constructor<?> packetScore = null;
 
+        Object enumScoreActionChange = null;
+        Object enumScoreActionRemove = null;
+
         Constructor<?> sbScore = null;
         Method sbScoreSet = null;
 
@@ -61,6 +67,7 @@ public class NMS {
             Class<?> packetObjClass = getClass("PacketPlayOutScoreboardObjective");
 
             Class<?> scoreClass = getClass("ScoreboardScore");
+            Class<?> scoreActionClass = getClass("ScoreboardServer$Action");
 
             Class<?> sbClass = getClass("Scoreboard");
             Class<?> objClass = getClass("ScoreboardObjective");
@@ -75,14 +82,29 @@ public class NMS {
             sbScore = scoreClass.getConstructor(sbClass, objClass, String.class);
             sbScoreSet = scoreClass.getMethod("setScore", int.class);
 
-            if(version.getMajor().equals("1.7"))
-                packetScore = packetScoreClass.getConstructor(scoreClass, int.class);
-            else {
-                packetScore = packetScoreClass.getConstructor(scoreClass);
-                packetScoreRemove = packetScoreClass.getConstructor(String.class, objClass);
+            switch(version.getMajor()) {
+                case "1.7":
+                    packetScore = packetScoreClass.getConstructor(scoreClass, int.class);
+
+                    packetObj = packetObjClass.getConstructor(int.class, objClass);
+                    break;
+                case "1.13":
+                    packetScore = packetScoreClass.getConstructor(scoreActionClass,
+                            String.class, String.class, int.class);
+
+                    enumScoreActionChange = scoreActionClass.getEnumConstants()[0];
+                    enumScoreActionRemove = scoreActionClass.getEnumConstants()[1];
+
+                    packetObj = packetObjClass.getConstructor(objClass, int.class);
+                    break;
+                default:
+                    packetScore = packetScoreClass.getConstructor(scoreClass);
+                    packetScoreRemove = packetScoreClass.getConstructor(String.class, objClass);
+
+                    packetObj = packetObjClass.getConstructor(objClass, int.class);
+                    break;
             }
 
-            packetObj = packetObjClass.getConstructor(objClass, int.class);
             packetDisplay = packetDisplayClass.getConstructor(int.class, objClass);
 
             playerConnection = playerClass.getField("playerConnection");
@@ -95,6 +117,9 @@ public class NMS {
 
         PACKET_SCORE_REMOVE = packetScoreRemove;
         PACKET_SCORE = packetScore;
+
+        ENUM_SCORE_ACTION_CHANGE = enumScoreActionChange;
+        ENUM_SCORE_ACTION_REMOVE = enumScoreActionRemove;
 
         SB_SCORE = sbScore;
         SB_SCORE_SET = sbScoreSet;
