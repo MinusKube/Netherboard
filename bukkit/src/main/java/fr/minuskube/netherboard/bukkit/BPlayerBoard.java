@@ -89,6 +89,9 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         if(name.equals(oldName))
             return;
 
+        this.lines.entrySet()
+                .removeIf(entry -> entry.getValue().equals(name));
+
         if(oldName != null) {
             if(NMS.getVersion().getMajor().equals("1.7")) {
                 sendScore(this.objective, oldName, score, true);
