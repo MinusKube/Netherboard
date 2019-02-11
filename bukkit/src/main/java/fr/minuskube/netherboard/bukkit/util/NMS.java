@@ -109,7 +109,7 @@ public class NMS {
 
             playerConnection = playerClass.getField("playerConnection");
             sendPacket = playerConnectionClass.getMethod("sendPacket", packetClass);
-        } catch(ClassNotFoundException | NoSuchMethodException | NoSuchFieldException e) {
+        } catch(Exception e) {
             LOGGER.error("Error while loading NMS methods. (Unsupported Minecraft version?)", e);
         }
 
@@ -135,8 +135,12 @@ public class NMS {
         return version;
     }
 
-    public static Class<?> getClass(String name) throws ClassNotFoundException {
-        return Class.forName(packageName + "." + name);
+    public static Class<?> getClass(String name) {
+        try {
+            return Class.forName(packageName + "." + name);
+        } catch(ClassNotFoundException e) {
+            return null;
+        }
     }
 
     private static Map<Class<?>, Method> handles = new HashMap<>();
