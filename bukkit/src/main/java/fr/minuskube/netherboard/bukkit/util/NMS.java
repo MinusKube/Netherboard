@@ -82,11 +82,11 @@ public class NMS {
             sbScore = scoreClass.getConstructor(sbClass, objClass, String.class);
             sbScoreSet = scoreClass.getMethod("setScore", int.class);
 
+            packetObj = packetObjClass.getConstructor(objClass, int.class);
+
             switch(version.getMajor()) {
                 case "1.7":
                     packetScore = packetScoreClass.getConstructor(scoreClass, int.class);
-
-                    packetObj = packetObjClass.getConstructor(int.class, objClass);
                     break;
                 case "1.13":
                     packetScore = packetScoreClass.getConstructor(scoreActionClass,
@@ -94,14 +94,10 @@ public class NMS {
 
                     enumScoreActionChange = scoreActionClass.getEnumConstants()[0];
                     enumScoreActionRemove = scoreActionClass.getEnumConstants()[1];
-
-                    packetObj = packetObjClass.getConstructor(objClass, int.class);
                     break;
                 default:
                     packetScore = packetScoreClass.getConstructor(scoreClass);
                     packetScoreRemove = packetScoreClass.getConstructor(String.class, objClass);
-
-                    packetObj = packetObjClass.getConstructor(objClass, int.class);
                     break;
             }
 
