@@ -4,7 +4,7 @@ Scoreboard API for your Minecraft Sponge and Bukkit Plugins.
 **You can use this as a Plugin, or just add it to your dependencies.**
 
 ## Features:
-- Works for all the **Bukkit** versions since **1.7** (even **1.13**!).
+- Works for all the **Bukkit** versions since **1.7** (even **1.14**!).
 - Works with **Sponge**! (Tell me if a version is not compatible)
 - No blinking!
 - Max characters per line:
@@ -70,10 +70,10 @@ repositories {
 }
 
 dependencies {
-    compile 'fr.minuskube:netherboard-bukkit:1.1.2'
+    compile 'fr.minuskube:netherboard-bukkit:1.1.3'
     
     // Or if you use Sponge:
-    // compile 'fr.minuskube:netherboard-sponge:1.1.2'
+    // compile 'fr.minuskube:netherboard-sponge:1.1.3'
 }
 ```
 
@@ -89,7 +89,7 @@ dependencies {
   <artifactId>netherboard-sponge</artifactId>
   -->
   
-  <version>1.1.2</version>
+  <version>1.1.3</version>
 </dependency>
 ```
 

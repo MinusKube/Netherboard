@@ -88,16 +88,20 @@ public class NMS {
                 case "1.7":
                     packetScore = packetScoreClass.getConstructor(scoreClass, int.class);
                     break;
-                case "1.13":
+                case "1.8":
+                case "1.9":
+                case "1.10":
+                case "1.11":
+                case "1.12":
+                    packetScore = packetScoreClass.getConstructor(scoreClass);
+                    packetScoreRemove = packetScoreClass.getConstructor(String.class, objClass);
+                    break;
+                default:
                     packetScore = packetScoreClass.getConstructor(scoreActionClass,
                             String.class, String.class, int.class);
 
                     enumScoreActionChange = scoreActionClass.getEnumConstants()[0];
                     enumScoreActionRemove = scoreActionClass.getEnumConstants()[1];
-                    break;
-                default:
-                    packetScore = packetScoreClass.getConstructor(scoreClass);
-                    packetScoreRemove = packetScoreClass.getConstructor(String.class, objClass);
                     break;
             }
 
