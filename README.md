@@ -4,7 +4,7 @@ Scoreboard API for your Minecraft Sponge and Bukkit Plugins.
 **You can use this as a Plugin, or just add it to your dependencies.**
 
 ## Features:
-- Works for all the **Bukkit** versions since **1.7** (even **1.14**!).
+- Works for all the **Bukkit** versions since **1.7** (even **1.15**!).
 - Works with **Sponge**! (Tell me if a version is not compatible)
 - No blinking!
 - Max characters per line:
