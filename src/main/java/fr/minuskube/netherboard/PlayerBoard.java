@@ -5,7 +5,7 @@ import fr.minuskube.netherboard.line.BoardLine;
 import java.util.Map;
 
 /**
- * Represents a Player's Scorebard.
+ * Represents a Player's Scoreboard.
  */
 public interface PlayerBoard {
 
@@ -18,23 +18,23 @@ public interface PlayerBoard {
     BoardLine get(int score);
 
     /**
-     * Sets a line with its name and its score.
+     * Sets a line at the given score.
      * This will update the line if it already exists, and create it if it doesn't.
      *
-     * @param line  the line
      * @param score the score of the line
+     * @param line  the line
      */
-    void set(BoardLine line, int score);
+    void set(int score, BoardLine line);
 
     /**
-     * Removes a line from its score.
+     * Removes the line at the given score.
      *
      * @param score the score of the line to remove
      */
     void remove(int score);
 
     /**
-     * Totally deletes the board, after this, you can't use this instance again,
+     * Totally deletes the board, after this, you can't use this instance anymore,
      * you'll need to create another PlayerBoard if you want to create the scoreboard again.
      */
     void delete();
@@ -59,5 +59,12 @@ public interface PlayerBoard {
      * @return the lines of the board
      */
     Map<Integer, BoardLine> getLines();
+
+    /**
+     * Sets all the lines of the board.
+     *
+     * @param lines the new lines with their score
+     */
+    void setLines(Map<Integer, BoardLine> lines);
 
 }

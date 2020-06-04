@@ -18,10 +18,12 @@ public class SpongeBoardManager extends AbstractBoardManager {
     protected UUID getUniqueId(Object player) {
         Preconditions.checkNotNull(player, "The given player must not be null.");
 
-        if(player instanceof UUID)
+        if(player instanceof UUID) {
             return (UUID) player;
-        if(player instanceof Player)
+        }
+        if(player instanceof Player) {
             return ((Player) player).getUniqueId();
+        }
         if(player instanceof String) {
             Player spongePlayer = Sponge.getServer().getPlayer((String) player)
                     .orElseThrow(() -> new IllegalArgumentException("The given name doesn't match any online player."));

@@ -1,6 +1,7 @@
 package fr.minuskube.netherboard.text;
 
 import com.google.common.collect.ImmutableMap;
+import fr.minuskube.netherboard.util.MinecraftConstants;
 
 public class BlinkTextAnimation extends AbstractTextAnimation {
 
@@ -10,8 +11,8 @@ public class BlinkTextAnimation extends AbstractTextAnimation {
     private byte state = 0;
 
     protected BlinkTextAnimation() {
-        super(20, ImmutableMap.of(
-                FIRST_FRAME_PROPERTY, "Potato",
+        super(MinecraftConstants.TICKS_PER_SECOND, ImmutableMap.of(
+                FIRST_FRAME_PROPERTY, "<Blinking Text>",
                 SECOND_FRAME_PROPERTY, ""
         ));
     }

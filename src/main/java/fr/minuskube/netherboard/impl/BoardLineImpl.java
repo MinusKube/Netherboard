@@ -19,12 +19,18 @@ public class BoardLineImpl implements BoardLine {
     }
 
     @Override
-    public boolean hasAnimation() { return animation != null; }
+    public boolean hasAnimation() {
+        return animation != null;
+    }
 
     @Override
-    public Optional<TextAnimation> getAnimation() { return Optional.ofNullable(animation); }
+    public Optional<TextAnimation> getAnimation() {
+        return Optional.ofNullable(animation);
+    }
 
     @Override
-    public String getText() { return hasAnimation() ? animation.getCurrentText() : text; }
+    public String getText() {
+        return hasAnimation() ? animation.getCurrentText() : text;
+    }
 
 }

@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("rawtypes")
 public abstract class AbstractTextAnimation implements TextAnimation {
 
     protected int interval;
@@ -27,11 +28,13 @@ public abstract class AbstractTextAnimation implements TextAnimation {
     @SuppressWarnings("unchecked")
     @Override
     public <E> E getProperty(Property<?, E> property) {
-        if(properties.containsKey(property))
+        if(properties.containsKey(property)) {
             return (E) properties.get(property);
+        }
 
-        if(defaultProperties.containsKey(property))
+        if(defaultProperties.containsKey(property)) {
             return (E) defaultProperties.get(property);
+        }
 
         throw new IllegalArgumentException("The property " + property.getClass().getSimpleName()
                 + " is not valid for the class " + getClass().getSimpleName() + ".");

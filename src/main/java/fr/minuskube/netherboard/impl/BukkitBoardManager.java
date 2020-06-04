@@ -18,10 +18,12 @@ public class BukkitBoardManager extends AbstractBoardManager {
     protected UUID getUniqueId(Object player) {
         Preconditions.checkNotNull(player, "The given player must not be null.");
 
-        if(player instanceof UUID)
+        if(player instanceof UUID) {
             return (UUID) player;
-        if(player instanceof Player)
+        }
+        if(player instanceof Player) {
             return ((Player) player).getUniqueId();
+        }
         if(player instanceof String) {
             Player bukkitPlayer = Bukkit.getPlayer((String) player);
 

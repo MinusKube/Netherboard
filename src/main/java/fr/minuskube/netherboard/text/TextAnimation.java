@@ -20,10 +20,11 @@ public interface TextAnimation {
         return new Builder<>(clazz);
     }
 
+    @SuppressWarnings("rawtypes")
     class Builder<T extends TextAnimation> {
 
-        private Class<T> clazz;
-        private Map<TextAnimation.Property, Object> properties = new HashMap<>();
+        private final Class<T> clazz;
+        private final Map<TextAnimation.Property, Object> properties = new HashMap<>();
         private int interval = 0;
 
         public Builder(Class<T> clazz) {
@@ -35,7 +36,7 @@ public interface TextAnimation {
             return this;
         }
 
-        public <E> Builder<T> property(TextAnimation.Property<T, E> property, E value) {
+        public <E> Builder<T> property(TextAnimation.Property<? super T, E> property, E value) {
             properties.put(property, value);
             return this;
         }
@@ -46,12 +47,14 @@ public interface TextAnimation {
                 T t = clazz.newInstance();
                 t.setInterval(interval);
 
-                for(Map.Entry<TextAnimation.Property, Object> entry : properties.entrySet())
+                for(Map.Entry<TextAnimation.Property, Object> entry : properties.entrySet()) {
                     t.setProperty(entry.getKey(), entry.getValue());
+                }
 
                 return t;
             } catch(InstantiationException | IllegalAccessException e) {
-                throw new IllegalStateException("The given TextAnimation class could not be instantiated.", e);
+                throw new IllegalStateException("The given TextAnimation class could not be instantiated " +
+                        "(no accessible no-parameter constructor?).", e);
             }
         }
 

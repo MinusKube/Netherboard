@@ -1,24 +1,14 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '1.2.4'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'java'
+    id 'maven'
+    id 'signing'
 }
-
-apply plugin: 'java'
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'maven'
-apply plugin: 'signing'
 
 sourceCompatibility = '1.8'
 
 group 'fr.minuskube'
 version '2.0.0'
-
-configurations { provided }
-
-sourceSets {
-    main.compileClasspath += configurations.provided
-    test.compileClasspath += configurations.provided
-    test.runtimeClasspath += configurations.provided
-}
 
 repositories {
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
@@ -29,24 +19,22 @@ repositories {
 }
 
 dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.25'
-    compile 'org.slf4j:slf4j-simple:1.7.25'
+    compileOnly 'org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'
+    compileOnly 'org.spongepowered:spongeapi:5.1.0'
+    compileOnly 'org.jetbrains:annotations:19.0.0'
 
-    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.40'
-
-    provided 'org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'
-    provided 'org.spongepowered:spongeapi:5.1.0'
+    implementation 'org.jooq:joor-java-8:0.9.12'
 
     testCompile 'junit:junit:4.12'
 }
 
 task javadocJar(type: Jar) {
-    classifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadoc
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
 

@@ -40,8 +40,9 @@ public abstract class AbstractBoardManager implements BoardManager {
         UUID uuid = getUniqueId(player);
         Optional<PlayerBoard> board = getBoard(uuid);
 
-        if(!board.isPresent())
+        if(!board.isPresent()) {
             return false;
+        }
 
         board.get().delete();
         boards.remove(uuid);
@@ -53,8 +54,9 @@ public abstract class AbstractBoardManager implements BoardManager {
     protected UUID getUniqueId(Object player) {
         Preconditions.checkNotNull(player, "The given player must not be null.");
 
-        if(player instanceof UUID)
+        if(player instanceof UUID) {
             return (UUID) player;
+        }
 
         throw new IllegalArgumentException("The given player type is not supported. " +
                 "It must be one of these types: UUID");
