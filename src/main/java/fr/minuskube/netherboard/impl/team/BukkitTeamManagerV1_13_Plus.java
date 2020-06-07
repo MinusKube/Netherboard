@@ -12,7 +12,7 @@ public class BukkitTeamManagerV1_13_Plus implements TeamManager {
 
         TODO: Support other versions
         TODO: Better exception handling
-        TODO: Add correct prefix/entry/suffix handling
+        TODO: Load reflection classes only once
 
      */
 
@@ -44,30 +44,50 @@ public class BukkitTeamManagerV1_13_Plus implements TeamManager {
     }
 
     @Override
-    public void createTeam(int score) {
-        String teamName = "team" + score;
+    public void createTeam(int score, String line) {
+        TeamNameData nameData = calculateTeamNameData(score, line);
 
         try {
-            sendTeamPacket(teamName, TeamMode.CREATE);
+            sendTeamPacket(TeamMode.CREATE, nameData);
         } catch (ReflectException e) {
             throw new IllegalStateException("Unable to send team creation packet. (Unsupported version?)");
         }
     }
 
     @Override
-    public void deleteTeam(int score) {
-        String teamName = "team" + score;
+    public void updateTeam(int score, String line) {
+        TeamNameData nameData = calculateTeamNameData(score, line);
 
         try {
-            sendTeamPacket(teamName, TeamMode.REMOVE);
+            sendTeamPacket(TeamMode.UPDATE, nameData);
+        } catch (ReflectException e) {
+            throw new IllegalStateException("Unable to send team update packet. (Unsupported version?)");
+        }
+    }
+
+    @Override
+    public void deleteTeam(int score, String line) {
+        TeamNameData nameData = calculateTeamNameData(score, line);
+
+        try {
+            sendTeamPacket(TeamMode.REMOVE, nameData);
         } catch (ReflectException e) {
             throw new IllegalStateException("Unable to send team deletion packet. (Unsupported version?)");
         }
     }
 
-    private void sendTeamPacket(String teamName, TeamMode mode) throws ReflectException {
+    private void sendTeamPacket(TeamMode mode, TeamNameData nameData) throws ReflectException {
         /*
             ScoreboardTeam team = new ScoreboardTeam(null, teamName);
+
+            if (mode != TeamMode.REMOVE) {
+                ChatComponentText prefix = new ChatComponentText(nameData.getPrefix());
+                team.setPrefix(prefix);
+
+                ChatComponentText suffix = new ChatComponentText(nameData.getSuffix());
+                team.setSuffix(suffix);
+            }
+
             PacketPlayOutScoreboardTeam packetTeam = new PacketPlayOutScoreboardTeam(team, mode.getId());
 
             EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
@@ -77,8 +97,19 @@ public class BukkitTeamManagerV1_13_Plus implements TeamManager {
         String nmsPackage = MinecraftConstants.VERSION.getNMSPackage();
 
         Object team = Reflect.onClass(nmsPackage + ".ScoreboardTeam")
-                .create(null, teamName)
+                .create(null, nameData.getName())
                 .get();
+
+        if (mode != TeamMode.REMOVE) {
+            Reflect chatComponentText = Reflect.onClass(nmsPackage + ".ChatComponentText");
+
+            Object prefix = chatComponentText.create(nameData.getPrefix()).get();
+            Reflect.on(team).call("setPrefix", prefix);
+
+            Object suffix = chatComponentText.create(nameData.getSuffix()).get();
+            Reflect.on(team).call("setSuffix", suffix);
+        }
+
         Object packetTeam = Reflect.onClass(nmsPackage + ".PacketPlayOutScoreboardTeam")
                 .create(team, mode.getId())
                 .get();
