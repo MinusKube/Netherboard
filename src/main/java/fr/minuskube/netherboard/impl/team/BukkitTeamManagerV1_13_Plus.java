@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.joor.Reflect;
 import org.joor.ReflectException;
 
+import java.util.Set;
+
 public class BukkitTeamManagerV1_13_Plus implements TeamManager {
 
     /*
@@ -37,10 +39,17 @@ public class BukkitTeamManagerV1_13_Plus implements TeamManager {
         // put the whole line in it.
 
         return new TeamNameData(
+                "netherboard" + score,
+
                 line,
                 String.valueOf(MinecraftColorCode.fromIndex(score)),
                 ""
         );
+    }
+
+    @Override
+    public String getEntryForLine(int score, String line) {
+        return calculateTeamNameData(score, line).getEntry();
     }
 
     @Override
@@ -78,20 +87,25 @@ public class BukkitTeamManagerV1_13_Plus implements TeamManager {
 
     private void sendTeamPacket(TeamMode mode, TeamNameData nameData) throws ReflectException {
         /*
-            ScoreboardTeam team = new ScoreboardTeam(null, teamName);
+            This method invokes the equivalent of the given code with Reflection:
 
-            if (mode != TeamMode.REMOVE) {
-                ChatComponentText prefix = new ChatComponentText(nameData.getPrefix());
-                team.setPrefix(prefix);
+                var team = new ScoreboardTeam(null, nameData.getName());
 
-                ChatComponentText suffix = new ChatComponentText(nameData.getSuffix());
-                team.setSuffix(suffix);
-            }
+                if (mode != TeamMode.REMOVE) {
+                    var prefix = new ChatComponentText(nameData.getPrefix());
+                    team.e = prefix;
 
-            PacketPlayOutScoreboardTeam packetTeam = new PacketPlayOutScoreboardTeam(team, mode.getId());
+                    var suffix = new ChatComponentText(nameData.getSuffix());
+                    team.f = suffix;
 
-            EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-            nmsPlayer.playerConnection.sendPacket(packetTeam);
+                    Set<String> entrySet = team.c;
+                    entrySet.add(nameData.getEntry());
+                }
+
+                var packetTeam = new PacketPlayOutScoreboardTeam(team, mode.getId());
+
+                EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+                nmsPlayer.playerConnection.sendPacket(packetTeam);
          */
 
         String nmsPackage = MinecraftConstants.VERSION.getNMSPackage();
@@ -104,10 +118,13 @@ public class BukkitTeamManagerV1_13_Plus implements TeamManager {
             Reflect chatComponentText = Reflect.onClass(nmsPackage + ".ChatComponentText");
 
             Object prefix = chatComponentText.create(nameData.getPrefix()).get();
-            Reflect.on(team).call("setPrefix", prefix);
+            Reflect.on(team).set("e", prefix);
 
             Object suffix = chatComponentText.create(nameData.getSuffix()).get();
-            Reflect.on(team).call("setSuffix", suffix);
+            Reflect.on(team).set("f", suffix);
+
+            Set<String> entrySet = Reflect.on(team).get("c");
+            entrySet.add(nameData.getEntry());
         }
 
         Object packetTeam = Reflect.onClass(nmsPackage + ".PacketPlayOutScoreboardTeam")
