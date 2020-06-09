@@ -1,4 +1,4 @@
-package fr.minuskube.netherboard.impl;
+package fr.minuskube.netherboard.internal;
 
 import com.google.common.base.Preconditions;
 import fr.minuskube.netherboard.BoardManager;

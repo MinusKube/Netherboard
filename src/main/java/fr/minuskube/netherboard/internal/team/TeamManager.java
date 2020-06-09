@@ -1,4 +1,4 @@
-package fr.minuskube.netherboard.impl.team;
+package fr.minuskube.netherboard.internal.team;
 
 public interface TeamManager {
 

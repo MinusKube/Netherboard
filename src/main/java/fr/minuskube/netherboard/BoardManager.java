@@ -13,7 +13,7 @@ import java.util.Optional;
  *      <li>Player</li>
  *      <li>UUID</li>
  *      <li>String (the player's name)</li>
- *      <li>or other, depending of the implementation</li>
+ *      <li>or other, depending on the implementation</li>
  *  </ul>
  * </p>
  */
@@ -31,17 +31,17 @@ public interface BoardManager {
      * Gets the player board, if the player has one.
      *
      * @param player the player, see {@link BoardManager} for more infos
-     * @return an <code>Optional</code> containing the player's board,
-     *         or <code>Optional.empty()</code> if the player doesn't have any
+     * @return an {@code Optional} containing the player's board,
+     *         or {@code Optional.empty()} if the player doesn't have any
      */
     Optional<PlayerBoard> getBoard(Object player);
 
     /**
      * Checks if the player has a board.<br>
-     * Similar to <code>getBoard(player).isPresent()</code>.
+     * Similar to {@code getBoard(player).isPresent()}.
      *
      * @param player the player, see {@link BoardManager} for more infos
-     * @return <code>true</code> if the player has a board
+     * @return {@code true} if the player has a board
      */
     boolean hasBoard(Object player);
 
@@ -49,8 +49,8 @@ public interface BoardManager {
      * Deletes the player board.
      *
      * @param player the player, see {@link BoardManager} for more infos
-     * @return <code>true</code> if the board has been deleted successfully,
-     *         or <code>false</code> if the player doesn't have any board
+     * @return {@code true} if the board has been deleted successfully,
+     *         or {@code false} if the player doesn't have any board
      */
     boolean deleteBoard(Object player);
 

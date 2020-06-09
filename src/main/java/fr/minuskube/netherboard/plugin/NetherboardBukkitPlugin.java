@@ -1,7 +1,7 @@
 package fr.minuskube.netherboard.plugin;
 
 import fr.minuskube.netherboard.BoardManager;
-import fr.minuskube.netherboard.impl.BukkitBoardManager;
+import fr.minuskube.netherboard.internal.BukkitBoardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

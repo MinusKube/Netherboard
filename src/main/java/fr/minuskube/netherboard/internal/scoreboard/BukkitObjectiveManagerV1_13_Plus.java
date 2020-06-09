@@ -1,4 +1,4 @@
-package fr.minuskube.netherboard.impl.scoreboard;
+package fr.minuskube.netherboard.internal.scoreboard;
 
 import com.google.common.base.Preconditions;
 import fr.minuskube.netherboard.util.MinecraftConstants;
@@ -68,6 +68,11 @@ public class BukkitObjectiveManagerV1_13_Plus implements ObjectiveManager {
 
     @Override
     public void updateLine(int score, String newLine) {
+        // TODO: Update buffer objective
+    }
+
+    @Override
+    public void removeLine(int score) {
         // TODO: Update buffer objective
     }
 

@@ -1,4 +1,4 @@
-package fr.minuskube.netherboard.impl;
+package fr.minuskube.netherboard.internal;
 
 import fr.minuskube.netherboard.line.BoardLine;
 import fr.minuskube.netherboard.text.TextAnimation;

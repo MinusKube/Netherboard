@@ -1,7 +1,7 @@
 package fr.minuskube.netherboard.plugin;
 
 import fr.minuskube.netherboard.BoardManager;
-import fr.minuskube.netherboard.impl.SpongeBoardManager;
+import fr.minuskube.netherboard.internal.SpongeBoardManager;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;

@@ -1,6 +1,6 @@
 package fr.minuskube.netherboard.line;
 
-import fr.minuskube.netherboard.impl.BoardLineImpl;
+import fr.minuskube.netherboard.internal.BoardLineImpl;
 import fr.minuskube.netherboard.text.TextAnimation;
 import net.md_5.bungee.api.chat.BaseComponent;
 

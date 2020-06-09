@@ -1,4 +1,4 @@
-package fr.minuskube.netherboard.impl.team;
+package fr.minuskube.netherboard.internal.team;
 
 import fr.minuskube.netherboard.util.MinecraftColorCode;
 import fr.minuskube.netherboard.util.MinecraftConstants;

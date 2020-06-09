@@ -1,6 +1,6 @@
-package fr.minuskube.netherboard.impl.team;
+package fr.minuskube.netherboard.internal.scoreboard;
 
-public enum TeamMode {
+public enum ObjectiveMode {
 
     CREATE(0),
     REMOVE(1),
@@ -8,7 +8,7 @@ public enum TeamMode {
 
     private final int id;
 
-    TeamMode(int id) {
+    ObjectiveMode(int id) {
         this.id = id;
     }
 
