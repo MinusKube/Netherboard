@@ -38,6 +38,16 @@ When you have your board, you can do whatever you want with it:
 // If there is already a line with this score, it will replace it.
 board.set("Test Score", 5);
 
+// Set all the lines
+// This will remove all the existing lines then set the new ones
+board.setAll(
+    "First Line",
+    "Second Line",
+    "Third Line",
+    "Fourth Line",
+    "Fifth Line"
+);
+
 // Get a line from its score
 board.get(5);
 
@@ -46,6 +56,9 @@ board.remove(5);
 
 // Change the name of the board
 board.setName("My New Scoreboard");
+
+// Clear the board
+board.clear();
 
 // Delete the board
 board.delete();
