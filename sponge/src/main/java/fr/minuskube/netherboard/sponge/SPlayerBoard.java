@@ -119,6 +119,26 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
         this.lines.put(score, name);
     }
 
+    @Override
+    public void setAll(Text... lines) {
+        if(this.deleted)
+            throw new IllegalStateException("The PlayerBoard is deleted!");
+
+        clear();
+
+        for(int i = 0; i < lines.length; i++) {
+            Text line = lines[i];
+
+            set(line, 16 - i);
+        }
+    }
+
+    @Override
+    public void clear() {
+        this.lines.keySet().forEach(this::remove);
+        this.lines.clear();
+    }
+
     private void swapBuffers() {
         this.scoreboard.updateDisplaySlot(this.buffer, DisplaySlots.SIDEBAR);
 

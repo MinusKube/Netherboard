@@ -115,6 +115,26 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         this.lines.put(score, name);
     }
 
+    @Override
+    public void setAll(String... lines) {
+        if(this.deleted)
+            throw new IllegalStateException("The PlayerBoard is deleted!");
+
+        clear();
+
+        for(int i = 0; i < lines.length; i++) {
+            String line = lines[i];
+
+            set(line, 16 - i);
+        }
+    }
+
+    @Override
+    public void clear() {
+        this.lines.keySet().forEach(this::remove);
+        this.lines.clear();
+    }
+
     private void swapBuffers() {
         sendObjectiveDisplay(this.buffer);
 
@@ -158,7 +178,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private void sendScore(Objective obj, String name, int score, boolean remove) {
         try {
             Object sbHandle = NMS.getHandle(scoreboard);

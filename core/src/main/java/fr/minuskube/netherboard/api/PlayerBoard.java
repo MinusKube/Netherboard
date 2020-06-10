@@ -22,6 +22,22 @@ public interface PlayerBoard<V, N, S> {
     void set(V name, N score);
 
     /**
+     * Sets all the lines of the scoreboard.
+     * This will clear all of the current board lines, then set
+     * all of the given lines, from top to down, by giving them each a score
+     * determined by {@code 16 - index}.
+     *
+     * @param lines the new board lines
+     */
+    @SuppressWarnings("unchecked")
+    void setAll(V... lines);
+
+    /**
+     * Clears all the lines of the scoreboard.
+     */
+    void clear();
+
+    /**
      * Removes a line from its score.
      *
      * @param score the score of the line to remove

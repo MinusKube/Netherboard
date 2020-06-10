@@ -18,7 +18,7 @@ public class Netherboard {
 
     private static Netherboard instance;
 
-    private Map<Player, BPlayerBoard> boards = new HashMap<>();
+    private final Map<Player, BPlayerBoard> boards = new HashMap<>();
 
     private Netherboard() {}
 
@@ -78,6 +78,17 @@ public class Netherboard {
      */
     public BPlayerBoard getBoard(Player player) {
         return boards.get(player);
+    }
+
+    /**
+     * Gets all the boards mapped to their player.
+     * This returns a copy of the current boards map,
+     * thus modifying the given Map will not have any effect on the boards.
+     *
+     * @return a new map with all the player boards
+     */
+    public Map<Player, BPlayerBoard> getBoards() {
+        return new HashMap<>(boards);
     }
 
     /**
