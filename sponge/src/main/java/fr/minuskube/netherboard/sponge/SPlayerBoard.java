@@ -13,6 +13,7 @@ import org.spongepowered.api.scoreboard.objective.Objective;
 import org.spongepowered.api.text.Text;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
@@ -129,13 +130,13 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
         for(int i = 0; i < lines.length; i++) {
             Text line = lines[i];
 
-            set(line, 16 - i);
+            set(line, lines.length - i);
         }
     }
 
     @Override
     public void clear() {
-        this.lines.keySet().forEach(this::remove);
+        new HashSet<>(this.lines.keySet()).forEach(this::remove);
         this.lines.clear();
     }
 

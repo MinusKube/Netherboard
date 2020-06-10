@@ -71,6 +71,16 @@ public class Netherboard {
     }
 
     /**
+     * Checks if the player has a board.
+     *
+     * @param player the player
+     * @return       <code>true</code> if the player has a board, otherwise <code>false</code>
+     */
+    public boolean hasBoard(Player player) {
+        return boards.containsKey(player);
+    }
+
+    /**
      * Gets the board of a player.
      *
      * @param player    the player
