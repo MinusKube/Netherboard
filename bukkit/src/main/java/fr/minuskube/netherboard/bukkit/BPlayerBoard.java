@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
@@ -121,12 +122,17 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         if(this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
-        clear();
-
         for(int i = 0; i < lines.length; i++) {
             String line = lines[i];
 
             set(line, lines.length - i);
+        }
+
+        Set<Integer> scores = new HashSet<>(this.lines.keySet());
+        for (int score : scores) {
+            if (score <= 0 || score > lines.length) {
+                remove(score);
+            }
         }
     }
 

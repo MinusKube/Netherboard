@@ -25,7 +25,7 @@ public interface PlayerBoard<V, N, S> {
      * Sets all the lines of the scoreboard.
      * This will clear all of the current board lines, then set
      * all of the given lines, from top to down, by giving them each a score
-     * determined by {@code 16 - index}.
+     * determined by {@code lines.length - index}.
      *
      * @param lines the new board lines
      */

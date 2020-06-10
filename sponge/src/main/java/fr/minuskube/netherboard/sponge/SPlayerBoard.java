@@ -15,6 +15,7 @@ import org.spongepowered.api.text.Text;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
@@ -125,12 +126,17 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
         if(this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
-        clear();
-
         for(int i = 0; i < lines.length; i++) {
             Text line = lines[i];
 
             set(line, lines.length - i);
+        }
+
+        Set<Integer> scores = new HashSet<>(this.lines.keySet());
+        for (int score : scores) {
+            if (score <= 0 || score > lines.length) {
+                remove(score);
+            }
         }
     }
 
