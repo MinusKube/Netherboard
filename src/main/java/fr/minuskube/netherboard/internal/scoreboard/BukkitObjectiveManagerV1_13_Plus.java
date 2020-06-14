@@ -67,12 +67,14 @@ public class BukkitObjectiveManagerV1_13_Plus implements ObjectiveManager {
     }
 
     @Override
-    public void updateLine(int score, String newLine) {
+    public void updateLine(int score, String line) {
         // TODO: Update buffer objective
+
+
     }
 
     @Override
-    public void removeLine(int score) {
+    public void removeLine(int score, String line) {
         // TODO: Update buffer objective
     }
 
@@ -117,7 +119,7 @@ public class BukkitObjectiveManagerV1_13_Plus implements ObjectiveManager {
                 .create(displayName)
                 .get();
 
-        Object criteriaHealthDisplay = Reflect.onClass(nmsPackage + ".IScoreboardCriteria.EnumScoreboardHealthDisplay")
+        Object criteriaHealthDisplay = Reflect.onClass(nmsPackage + ".IScoreboardCriteria$EnumScoreboardHealthDisplay")
                 .get("INTEGER");
 
         Object objective = Reflect.onClass(nmsPackage + ".ScoreboardObjective")
@@ -149,6 +151,27 @@ public class BukkitObjectiveManagerV1_13_Plus implements ObjectiveManager {
                 .get();
 
         playerConnection.sendPacket(packetDisplay);
+    }
+
+    private void sendScorePacket(ObjectiveScoreMode mode, String objectiveName, int score, String entry) {
+        /*
+            This method invokes the equivalent of the given code with Reflection:
+
+                var nmsMode = ScoreboardServer.Action.valueOf(mode.name());
+                var packetScore = new PacketPlayOutScoreboardScore(nmsMode, objectiveName, entry, score);
+
+                EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+                nmsPlayer.playerConnection.sendPacket(packetTeam);
+         */
+
+        String nmsPackage = MinecraftConstants.VERSION.getNMSPackage();
+        Object nmsMode = Reflect.onClass(nmsPackage + ".ScoreboardServer$Action").get(mode.name());
+
+        Object packetScore = Reflect.onClass(nmsPackage + ".PacketPlayOutScoreboardScore")
+                .create(nmsMode, objectiveName, entry, score)
+                .get();
+
+        playerConnection.sendPacket(packetScore);
     }
 
 }

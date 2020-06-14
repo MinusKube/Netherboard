@@ -45,7 +45,7 @@ public interface PlayerBoard {
      * Sets all the lines of the board.
      * This will clear all of the current board lines, then set
      * all of the given lines, from top to down, by giving them each a score
-     * determined by {@code 16 - index}.
+     * determined by {@code lines.length - index}.
      *
      * @param lines the new board lines
      */
@@ -55,7 +55,7 @@ public interface PlayerBoard {
      * Sets all the lines of the board.
      * This will clear all of the current board lines, then set
      * all of the given lines, from top to down, by giving them each a score
-     * determined by {@code 16 - index}.
+     * determined by {@code lines.length - index}.
      *
      * <p>
      *     This method is equivalent to calling the {@link #setAll(BoardLine...)} overload
