@@ -114,7 +114,7 @@ project(':bukkit') {
     dependencies {
         compileOnly 'org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'
 
-        implementation project(':core')
+        api project(':core')
     }
 }
 
@@ -132,6 +132,6 @@ project(':sponge') {
     dependencies {
         compileOnly 'org.spongepowered:spongeapi:5.1.0'
 
-        implementation project(':core')
+        api project(':core')
     }
 }
