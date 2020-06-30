@@ -70,7 +70,7 @@ Same thing than Bukkit, but the object is called `SPlayerBoard` and the methods 
 
 ## Usage
 To use the Netherboard API, either:
-  - put it in the `plugins` folder of your server, add it to your dependencies in your plugin.yml (e.g. `depend: [SmartInvs]`) and add it to the dependencies in your IDE.
+  - put it in the `plugins` folder of your server, add it to your dependencies in your plugin.yml (e.g. `depend: [Netherboard]`) and add it to the dependencies in your IDE.
   - add it to the dependencies in your IDE and include it in your plugin jar.
 
 You can download the latest version on the [Releases page](https://github.com/MinusKube/Netherboard/releases) on Github.
