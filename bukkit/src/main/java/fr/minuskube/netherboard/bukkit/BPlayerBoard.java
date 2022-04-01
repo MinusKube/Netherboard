@@ -3,6 +3,8 @@ package fr.minuskube.netherboard.bukkit;
 import fr.minuskube.netherboard.Netherboard;
 import fr.minuskube.netherboard.api.PlayerBoard;
 import fr.minuskube.netherboard.bukkit.util.NMS;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
@@ -16,27 +18,29 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
+@SuppressWarnings("unused")
+public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BPlayerBoard.class);
 
-    private Player player;
+    private final Player player;
     private Scoreboard scoreboard;
 
-    private String name;
+    private Component name;
 
     private Objective objective;
     private Objective buffer;
 
-    private Map<Integer, String> lines = new HashMap<>();
+    private Map<Integer, Component> lines = new HashMap<>();
 
     private boolean deleted = false;
 
-    public BPlayerBoard(Player player, String name) {
+    public BPlayerBoard(Player player, Component name) {
         this(player, null, name);
     }
 
-    public BPlayerBoard(Player player, Scoreboard scoreboard, String name) {
+    @SuppressWarnings({"ConstantConditions", "deprecation"})
+    public BPlayerBoard(Player player, Scoreboard scoreboard, Component name) {
         this.player = player;
         this.scoreboard = scoreboard;
 
@@ -63,18 +67,18 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         if(this.buffer == null)
             this.buffer = this.scoreboard.registerNewObjective("bf" + subName, "dummy");
 
-        this.objective.setDisplayName(name);
+        this.objective.displayName(name);
         sendObjective(this.objective, ObjectiveMode.CREATE);
         sendObjectiveDisplay(this.objective);
 
-        this.buffer.setDisplayName(name);
+        this.buffer.displayName(name);
         sendObjective(this.buffer, ObjectiveMode.CREATE);
 
         this.player.setScoreboard(this.scoreboard);
     }
 
     @Override
-    public String get(Integer score) {
+    public Component get(Integer score) {
         if(this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
@@ -82,11 +86,11 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
     }
 
     @Override
-    public void set(String name, Integer score) {
+    public void set(Component name, Integer score) {
         if(this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
-        String oldName = this.lines.get(score);
+        Component oldName = this.lines.get(score);
 
         if(name.equals(oldName))
             return;
@@ -118,12 +122,12 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
     }
 
     @Override
-    public void setAll(String... lines) {
+    public void setAll(Component... lines) {
         if(this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         for(int i = 0; i < lines.length; i++) {
-            String line = lines[i];
+            Component line = lines[i];
 
             set(line, lines.length - i);
         }
@@ -186,7 +190,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void sendScore(Objective obj, String name, int score, boolean remove) {
+    private void sendScore(Objective obj, Component name, int score, boolean remove) {
         try {
             Object sbHandle = NMS.getHandle(scoreboard);
             Object objHandle = NMS.getHandle(obj);
@@ -194,7 +198,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
             Object sbScore = NMS.SB_SCORE.newInstance(
                     sbHandle,
                     objHandle,
-                    name
+                PlainTextComponentSerializer.plainText().serialize(name)
             );
 
             NMS.SB_SCORE_SET.invoke(sbScore, score);
@@ -212,50 +216,40 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
                 ((Map) scores.get(name)).put(objHandle, sbScore);
             }
 
-            switch(NMS.getVersion().getMajor()) {
-                case "1.7": {
+            switch (NMS.getVersion().getMajor()) {
+                case "1.7" -> {
                     Object packet = NMS.PACKET_SCORE.newInstance(
-                            sbScore,
-                            remove ? 1 : 0
+                        sbScore,
+                        remove ? 1 : 0
                     );
 
                     NMS.sendPacket(packet, player);
-                    break;
                 }
-
-                case "1.8":
-                case "1.9":
-                case "1.10":
-                case "1.11":
-                case "1.12": {
+                case "1.8", "1.9", "1.10", "1.11", "1.12" -> {
                     Object packet;
 
-                    if(remove) {
+                    if (remove) {
                         packet = NMS.PACKET_SCORE_REMOVE.newInstance(
-                                name,
-                                objHandle
+                            name,
+                            objHandle
                         );
-                    }
-                    else {
+                    } else {
                         packet = NMS.PACKET_SCORE.newInstance(
-                                sbScore
+                            sbScore
                         );
                     }
 
                     NMS.sendPacket(packet, player);
-                    break;
                 }
-
-                default: {
+                default -> {
                     Object packet = NMS.PACKET_SCORE.newInstance(
-                            remove ? NMS.ENUM_SCORE_ACTION_REMOVE : NMS.ENUM_SCORE_ACTION_CHANGE,
-                            obj.getName(),
-                            name,
-                            score
+                        remove ? NMS.ENUM_SCORE_ACTION_REMOVE : NMS.ENUM_SCORE_ACTION_CHANGE,
+                        obj.getName(),
+                        PlainTextComponentSerializer.plainText().serialize(name),
+                        score
                     );
 
                     NMS.sendPacket(packet, player);
-                    break;
                 }
             }
         } catch(InstantiationException | IllegalAccessException
@@ -270,12 +264,12 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         if(this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
-        String name = this.lines.get(score);
+        Component name = this.lines.get(score);
 
         if(name == null)
             return;
 
-        this.scoreboard.resetScores(name);
+        this.scoreboard.resetScores(player);
         this.lines.remove(score);
     }
 
@@ -301,7 +295,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
     }
 
     @Override
-    public Map<Integer, String> getLines() {
+    public Map<Integer, Component> getLines() {
         if(this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
@@ -309,19 +303,19 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
     }
 
     @Override
-    public String getName() {
+    public Component getName() {
         return name;
     }
 
     @Override
-    public void setName(String name) {
+    public void setName(Component name) {
         if(this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         this.name = name;
 
-        this.objective.setDisplayName(name);
-        this.buffer.setDisplayName(name);
+        this.objective.displayName(name);
+        this.buffer.displayName(name);
 
         sendObjective(this.objective, ObjectiveMode.UPDATE);
         sendObjective(this.buffer, ObjectiveMode.UPDATE);

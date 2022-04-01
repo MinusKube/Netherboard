@@ -1,6 +1,7 @@
 package fr.minuskube.netherboard;
 
 import fr.minuskube.netherboard.bukkit.BPlayerBoard;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -29,7 +30,7 @@ public class Netherboard {
      * @param name      the name of the board
      * @return          the newly created board
      */
-    public BPlayerBoard createBoard(Player player, String name) {
+    public BPlayerBoard createBoard(Player player, Component name) {
         return createBoard(player, null, name);
     }
 
@@ -41,7 +42,7 @@ public class Netherboard {
      * @param name          the name of the board
      * @return              the newly created board
      */
-    public BPlayerBoard createBoard(Player player, Scoreboard scoreboard, String name) {
+    public BPlayerBoard createBoard(Player player, Scoreboard scoreboard, Component name) {
         deleteBoard(player);
 
         BPlayerBoard board = new BPlayerBoard(player, scoreboard, name);
