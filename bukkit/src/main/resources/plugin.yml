@@ -4,3 +4,4 @@ description: Scoreboard API for your Bukkit Plugins.
 author: MinusKube
 website: https://github.com/MinusKube/netherboard
 main: fr.minuskube.netherboard.bukkit.NetherboardPlugin
+api-version: 1.18

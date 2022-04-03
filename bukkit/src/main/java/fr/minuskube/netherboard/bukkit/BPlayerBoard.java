@@ -4,6 +4,7 @@ import fr.minuskube.netherboard.Netherboard;
 import fr.minuskube.netherboard.api.PlayerBoard;
 import fr.minuskube.netherboard.bukkit.util.NMS;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -36,18 +37,13 @@ public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> 
         this(player, null, name);
     }
 
-    @SuppressWarnings({"ConstantConditions", "deprecation"})
+    @SuppressWarnings({"deprecation"})
     public BPlayerBoard(Player player, Scoreboard scoreboard, Component name) {
         this.player = player;
         this.scoreboard = scoreboard;
 
         if(this.scoreboard == null) {
-            Scoreboard sb = player.getScoreboard();
-
-            if(sb == null || sb == Bukkit.getScoreboardManager().getMainScoreboard())
-                sb = Bukkit.getScoreboardManager().getNewScoreboard();
-
-            this.scoreboard = sb;
+            this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         }
 
         this.name = name;
@@ -94,6 +90,12 @@ public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> 
 
         this.lines.entrySet()
                 .removeIf(entry -> entry.getValue().equals(name));
+
+        if (this.lines.get(score) != null)
+            remove(score);
+
+        this.objective.displayName(name);
+        this.buffer.displayName(name);
 
         if(oldName != null) {
             if(NMS.getVersion().getMajor().equals("1.7")) {
@@ -143,7 +145,7 @@ public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> 
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         for(int i = 0; i < lines.size(); i++) {
-            Component line = lines.get(0);
+            Component line = lines.get(i);
 
             set(line, lines.size() - i);
         }
@@ -214,7 +216,7 @@ public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> 
             Object sbScore = NMS.SB_SCORE.newInstance(
                     sbHandle,
                     objHandle,
-                PlainTextComponentSerializer.plainText().serialize(name)
+                    PlainTextComponentSerializer.plainText().serialize(name)
             );
 
             NMS.SB_SCORE_SET.invoke(sbScore, score);
@@ -222,8 +224,9 @@ public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> 
             Map scores = (Map) NMS.PLAYER_SCORES.get(sbHandle);
 
             if(remove) {
-                if(scores.containsKey(name))
+                if(scores.containsKey(name)) {
                     ((Map) scores.get(name)).remove(objHandle);
+                }
             }
             else {
                 if(!scores.containsKey(name))
@@ -260,8 +263,7 @@ public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> 
                 default -> {
                     Object packet = NMS.PACKET_SCORE.newInstance(
                         remove ? NMS.ENUM_SCORE_ACTION_REMOVE : NMS.ENUM_SCORE_ACTION_CHANGE,
-                        obj.getName(),
-                        PlainTextComponentSerializer.plainText().serialize(name),
+                        obj.getName(), LegacyComponentSerializer.legacySection().serialize(name),
                         score
                     );
 
@@ -305,8 +307,11 @@ public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> 
         this.buffer.unregister();
         this.buffer = null;
 
+        this.lines.forEach((score, name) -> sendScore(this.objective, name, score, true));
+        clear();
         this.lines = null;
 
+        this.player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         this.deleted = true;
     }
 
@@ -345,5 +350,10 @@ public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> 
 
 
     private enum ObjectiveMode { CREATE, REMOVE, UPDATE }
+
+    @Override
+    public boolean isDeleted() {
+        return deleted;
+    }
 
 }

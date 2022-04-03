@@ -82,4 +82,11 @@ public interface PlayerBoard<V, N, S> {
      */
     Map<N, V> getLines();
 
+    /**
+     * Gets whether the board is deleted or not.
+     *
+     * @return whether the board is deleted
+     */
+    boolean isDeleted();
+
 }
