@@ -13,10 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> {
@@ -135,6 +132,25 @@ public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> 
         Set<Integer> scores = new HashSet<>(this.lines.keySet());
         for (int score : scores) {
             if (score <= 0 || score > lines.length) {
+                remove(score);
+            }
+        }
+    }
+
+    @Override
+    public void setAll(List<Component> lines) {
+        if(this.deleted)
+            throw new IllegalStateException("The PlayerBoard is deleted!");
+
+        for(int i = 0; i < lines.size(); i++) {
+            Component line = lines.get(0);
+
+            set(line, lines.size() - i);
+        }
+
+        Set<Integer> scores = new HashSet<>(this.lines.keySet());
+        for (int score : scores) {
+            if (score <= 0 || score > lines.size()) {
                 remove(score);
             }
         }
