@@ -6,7 +6,7 @@ plugins {
 
 subprojects {
     group = "live.mcparty"
-    version = "2.1.2"
+    version = "2.1.3"
 
     apply {
         plugin("com.github.johnrengelman.shadow")

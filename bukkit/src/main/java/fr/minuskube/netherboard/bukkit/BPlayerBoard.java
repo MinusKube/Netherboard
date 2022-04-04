@@ -210,6 +210,8 @@ public class BPlayerBoard implements PlayerBoard<Component, Integer, Component> 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void sendScore(Objective obj, Component name, int score, boolean remove) {
         try {
+            if (obj == null) return;
+
             Object sbHandle = NMS.getHandle(scoreboard);
             Object objHandle = NMS.getHandle(obj);
 
