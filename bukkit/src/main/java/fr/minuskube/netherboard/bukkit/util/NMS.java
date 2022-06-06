@@ -73,23 +73,30 @@ public class NMS {
             Class<?> playerConnectionClass = getClass("net.minecraft.server.network", "PlayerConnection");
             Class<?> packetClass = getClass("net.minecraft.network.protocol", "Packet");
 
-
             sbScore = scoreClass.getConstructor(sbClass, objClass, String.class);
-            sbScoreSet = scoreClass.getMethod("setScore", int.class);
+
+            if (VERSION.is1_18()) {
+                sbScoreSet = scoreClass.getMethod("b", int.class);
+            } else {
+                sbScoreSet = scoreClass.getMethod("setScore", int.class);
+            }
 
             packetObj = packetObjClass.getConstructor(objClass, int.class);
 
             packetDisplay = packetDisplayClass.getConstructor(int.class, objClass);
 
-            sendPacket = playerConnectionClass.getMethod("sendPacket", packetClass);
+            if (VERSION.is1_18()) {
+                sendPacket = playerConnectionClass.getMethod("a", packetClass);
+            } else {
+                sendPacket = playerConnectionClass.getMethod("sendPacket", packetClass);
+            }
 
             if (VERSION.isBelow1_17()) {
                 playerScores = sbClass.getDeclaredField("playerScores");
                 playerScores.setAccessible(true);
 
                 playerConnection = playerClass.getField("playerConnection");
-            }
-            else {
+            } else {
                 playerScores = sbClass.getDeclaredField("j");
                 playerScores.setAccessible(true);
 
@@ -118,7 +125,7 @@ public class NMS {
                     enumScoreActionRemove = scoreActionClass.getEnumConstants()[1];
                     break;
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOGGER.error("Error while loading NMS methods. (Unsupported Minecraft version?)", e);
         }
 
@@ -156,10 +163,10 @@ public class NMS {
 
         Class<?> clazz = obj.getClass();
 
-        if(!HANDLES.containsKey(clazz)) {
+        if (!HANDLES.containsKey(clazz)) {
             Method method = clazz.getDeclaredMethod("getHandle");
 
-            if(!method.isAccessible())
+            if (!method.isAccessible())
                 method.setAccessible(true);
 
             HANDLES.put(clazz, method);
@@ -169,11 +176,11 @@ public class NMS {
     }
 
     public static void sendPacket(Object packet, Player... players) {
-        for(Player p : players) {
+        for (Player p : players) {
             try {
                 Object playerConnection = PLAYER_CONNECTION.get(getHandle(p));
                 SEND_PACKET.invoke(playerConnection, packet);
-            } catch(IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 LOGGER.error("Error while sending packet to player. (Unsupported Minecraft version?)", e);
             }
         }
@@ -195,15 +202,22 @@ public class NMS {
             this.minor = splitName[2].substring(1);
         }
 
-        public String getName() { return name; }
+        public String getName() {
+            return name;
+        }
 
-        public String getMajor() { return major; }
-        public String getMinor() { return minor; }
+        public String getMajor() {
+            return major;
+        }
+
+        public String getMinor() {
+            return minor;
+        }
 
         public boolean isBelow1_17() {
-            return  major.equals("1.7")  ||
-                    major.equals("1.8")  ||
-                    major.equals("1.9")  ||
+            return major.equals("1.7") ||
+                    major.equals("1.8") ||
+                    major.equals("1.9") ||
                     major.equals("1.10") ||
                     major.equals("1.11") ||
                     major.equals("1.12") ||
@@ -213,6 +227,9 @@ public class NMS {
                     major.equals("1.16");
         }
 
+        public boolean is1_18() {
+            return major.contains("1.18");
+        }
     }
 
 }

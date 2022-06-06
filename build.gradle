@@ -11,7 +11,7 @@ subprojects {
     sourceCompatibility = '1.8'
 
     group 'fr.minuskube'
-    version '1.2.2'
+    version '1.2.3'
 
     repositories {
         mavenCentral()
@@ -42,15 +42,18 @@ subprojects {
 
     shadowJar.finalizedBy copyJar
 
+    /*
     signing {
         sign configurations.archives
     }
+     */
 
     uploadArchives {
         repositories {
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
+                /*
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                     authentication(userName: ossrhUsername, password: ossrhPassword)
                 }
@@ -58,6 +61,7 @@ subprojects {
                 snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
                     authentication(userName: ossrhUsername, password: ossrhPassword)
                 }
+                */
 
                 pom.project {
                     name 'Netherboard'

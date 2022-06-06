@@ -41,10 +41,10 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
         this.player = player;
         this.scoreboard = scoreboard;
 
-        if(this.scoreboard == null) {
+        if (this.scoreboard == null) {
             Scoreboard sb = player.getScoreboard();
 
-            if(sb == null || sb == Sponge.getServer().getServerScoreboard().orElse(null))
+            if (sb == null || sb == Sponge.getServer().getServerScoreboard().orElse(null))
                 sb = Scoreboard.builder().build();
 
             this.scoreboard = sb;
@@ -59,28 +59,28 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
         this.objective = this.scoreboard.getObjective("sb" + subName)
                 .orElseGet(() -> {
 
-            Objective obj = Objective.builder()
-                    .name("sb" + subName)
-                    .displayName(name)
-                    .criterion(Criteria.DUMMY)
-                    .build();
+                    Objective obj = Objective.builder()
+                            .name("sb" + subName)
+                            .displayName(name)
+                            .criterion(Criteria.DUMMY)
+                            .build();
 
-            this.scoreboard.addObjective(obj);
-            return obj;
-        });
+                    this.scoreboard.addObjective(obj);
+                    return obj;
+                });
 
         this.buffer = this.scoreboard.getObjective("bf" + subName)
                 .orElseGet(() -> {
 
-            Objective obj = Objective.builder()
-                    .name("bf" + subName)
-                    .displayName(name)
-                    .criterion(Criteria.DUMMY)
-                    .build();
+                    Objective obj = Objective.builder()
+                            .name("bf" + subName)
+                            .displayName(name)
+                            .criterion(Criteria.DUMMY)
+                            .build();
 
-            this.scoreboard.addObjective(obj);
-            return obj;
-        });
+                    this.scoreboard.addObjective(obj);
+                    return obj;
+                });
 
         this.scoreboard.updateDisplaySlot(this.objective, DisplaySlots.SIDEBAR);
         this.player.setScoreboard(this.scoreboard);
@@ -88,7 +88,7 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
     @Override
     public Text get(Integer score) {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         return this.lines.get(score);
@@ -96,15 +96,15 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
     @Override
     public void set(Text name, Integer score) {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         Text oldName = this.lines.get(score);
 
-        if(name.equals(oldName))
+        if (name.equals(oldName))
             return;
 
-        if(oldName != null) {
+        if (oldName != null) {
             this.buffer.removeScore(oldName);
             this.buffer.getOrCreateScore(name).setScore(score);
 
@@ -112,8 +112,7 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
             this.buffer.removeScore(oldName);
             this.buffer.getOrCreateScore(name).setScore(score);
-        }
-        else {
+        } else {
             this.objective.getOrCreateScore(name).setScore(score);
             this.buffer.getOrCreateScore(name).setScore(score);
         }
@@ -123,10 +122,10 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
     @Override
     public void setAll(Text... lines) {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
-        for(int i = 0; i < lines.length; i++) {
+        for (int i = 0; i < lines.length; i++) {
             Text line = lines[i];
 
             set(line, lines.length - i);
@@ -157,12 +156,12 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
     @Override
     public void remove(Integer score) {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         Text name = this.lines.get(score);
 
-        if(name == null)
+        if (name == null)
             return;
 
         this.scoreboard.removeScores(name);
@@ -171,7 +170,7 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
     @Override
     public void delete() {
-        if(this.deleted)
+        if (this.deleted)
             return;
 
         Netherboard.instance().removeBoard(player);
@@ -189,7 +188,7 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
     @Override
     public Map<Integer, Text> getLines() {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         return new HashMap<>(lines);
@@ -202,7 +201,7 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
 
     @Override
     public void setName(Text name) {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         this.name = name;
@@ -215,6 +214,8 @@ public class SPlayerBoard implements PlayerBoard<Text, Integer, Text> {
         return player;
     }
 
-    public Scoreboard getScoreboard() { return scoreboard; }
+    public Scoreboard getScoreboard() {
+        return scoreboard;
+    }
 
 }

@@ -7,4 +7,5 @@ import org.spongepowered.api.plugin.Plugin;
         authors = "MinusKube",
         url = "https://github.com/MinusKube/netherboard",
         version = "1.2.1")
-public class NetherboardPlugin {}
+public class NetherboardPlugin {
+}
