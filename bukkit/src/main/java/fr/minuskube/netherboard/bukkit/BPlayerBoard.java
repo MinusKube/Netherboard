@@ -40,10 +40,10 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         this.player = player;
         this.scoreboard = scoreboard;
 
-        if(this.scoreboard == null) {
+        if (this.scoreboard == null) {
             Scoreboard sb = player.getScoreboard();
 
-            if(sb == null || sb == Bukkit.getScoreboardManager().getMainScoreboard())
+            if (sb == null || sb == Bukkit.getScoreboardManager().getMainScoreboard())
                 sb = Bukkit.getScoreboardManager().getNewScoreboard();
 
             this.scoreboard = sb;
@@ -58,9 +58,9 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         this.objective = this.scoreboard.getObjective("sb" + subName);
         this.buffer = this.scoreboard.getObjective("bf" + subName);
 
-        if(this.objective == null)
+        if (this.objective == null)
             this.objective = this.scoreboard.registerNewObjective("sb" + subName, "dummy");
-        if(this.buffer == null)
+        if (this.buffer == null)
             this.buffer = this.scoreboard.registerNewObjective("bf" + subName, "dummy");
 
         this.objective.setDisplayName(name);
@@ -75,7 +75,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public String get(Integer score) {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         return this.lines.get(score);
@@ -83,23 +83,22 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public void set(String name, Integer score) {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         String oldName = this.lines.get(score);
 
-        if(name.equals(oldName))
+        if (name.equals(oldName))
             return;
 
         this.lines.entrySet()
                 .removeIf(entry -> entry.getValue().equals(name));
 
-        if(oldName != null) {
-            if(NMS.getVersion().getMajor().equals("1.7")) {
+        if (oldName != null) {
+            if (NMS.getVersion().getMajor().equals("1.7")) {
                 sendScore(this.objective, oldName, score, true);
                 sendScore(this.objective, name, score, false);
-            }
-            else {
+            } else {
                 sendScore(this.buffer, oldName, score, true);
                 sendScore(this.buffer, name, score, false);
 
@@ -108,8 +107,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
                 sendScore(this.buffer, oldName, score, true);
                 sendScore(this.buffer, name, score, false);
             }
-        }
-        else {
+        } else {
             sendScore(this.objective, name, score, false);
             sendScore(this.buffer, name, score, false);
         }
@@ -119,10 +117,10 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public void setAll(String... lines) {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
-        for(int i = 0; i < lines.length; i++) {
+        for (int i = 0; i < lines.length; i++) {
             String line = lines[i];
 
             set(line, lines.length - i);
@@ -161,7 +159,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
             );
 
             NMS.sendPacket(packetObj, player);
-        } catch(InstantiationException | IllegalAccessException
+        } catch (InstantiationException | IllegalAccessException
                 | InvocationTargetException | NoSuchMethodException e) {
 
             LOGGER.error("Error while creating and sending objective packet. (Unsupported Minecraft version?)", e);
@@ -178,7 +176,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
             );
 
             NMS.sendPacket(packet, player);
-        } catch(InstantiationException | IllegalAccessException
+        } catch (InstantiationException | IllegalAccessException
                 | InvocationTargetException | NoSuchMethodException e) {
 
             LOGGER.error("Error while creating and sending display packet. (Unsupported Minecraft version?)", e);
@@ -201,18 +199,17 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
             Map scores = (Map) NMS.PLAYER_SCORES.get(sbHandle);
 
-            if(remove) {
-                if(scores.containsKey(name))
+            if (remove) {
+                if (scores.containsKey(name))
                     ((Map) scores.get(name)).remove(objHandle);
-            }
-            else {
-                if(!scores.containsKey(name))
+            } else {
+                if (!scores.containsKey(name))
                     scores.put(name, new HashMap());
 
                 ((Map) scores.get(name)).put(objHandle, sbScore);
             }
 
-            switch(NMS.getVersion().getMajor()) {
+            switch (NMS.getVersion().getMajor()) {
                 case "1.7": {
                     Object packet = NMS.PACKET_SCORE.newInstance(
                             sbScore,
@@ -230,13 +227,12 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
                 case "1.12": {
                     Object packet;
 
-                    if(remove) {
+                    if (remove) {
                         packet = NMS.PACKET_SCORE_REMOVE.newInstance(
                                 name,
                                 objHandle
                         );
-                    }
-                    else {
+                    } else {
                         packet = NMS.PACKET_SCORE.newInstance(
                                 sbScore
                         );
@@ -258,7 +254,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
                     break;
                 }
             }
-        } catch(InstantiationException | IllegalAccessException
+        } catch (InstantiationException | IllegalAccessException
                 | InvocationTargetException | NoSuchMethodException e) {
 
             LOGGER.error("Error while creating and sending remove packet. (Unsupported Minecraft version?)", e);
@@ -267,12 +263,12 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public void remove(Integer score) {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         String name = this.lines.get(score);
 
-        if(name == null)
+        if (name == null)
             return;
 
         this.scoreboard.resetScores(name);
@@ -281,7 +277,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public void delete() {
-        if(this.deleted)
+        if (this.deleted)
             return;
 
         Netherboard.instance().removeBoard(player);
@@ -302,7 +298,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public Map<Integer, String> getLines() {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         return new HashMap<>(lines);
@@ -315,7 +311,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public void setName(String name) {
-        if(this.deleted)
+        if (this.deleted)
             throw new IllegalStateException("The PlayerBoard is deleted!");
 
         this.name = name;
@@ -331,9 +327,11 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
         return player;
     }
 
-    public Scoreboard getScoreboard() { return scoreboard; }
+    public Scoreboard getScoreboard() {
+        return scoreboard;
+    }
 
 
-    private enum ObjectiveMode { CREATE, REMOVE, UPDATE }
+    private enum ObjectiveMode {CREATE, REMOVE, UPDATE}
 
 }

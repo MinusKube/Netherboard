@@ -8,7 +8,7 @@ public interface PlayerBoard<V, N, S> {
      * Gets the name of the line from its score.
      *
      * @param score the score of the line
-     * @return      the name of the line, or null if the line doesn't exist.
+     * @return the name of the line, or null if the line doesn't exist.
      */
     V get(N score);
 
