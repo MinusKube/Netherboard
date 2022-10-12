@@ -1,12 +1,10 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 subprojects {
-    apply plugin: 'java-library'
     apply plugin: 'com.github.johnrengelman.shadow'
-    apply plugin: 'maven'
-    apply plugin: 'signing'
+    apply plugin: 'java-library'
 
     sourceCompatibility = '1.8'
 
@@ -22,78 +20,17 @@ subprojects {
         implementation 'org.slf4j:slf4j-simple:1.7.25'
     }
 
-    task javadocJar(type: Jar) {
-        classifier = 'javadoc'
-        from javadoc
-    }
-
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    artifacts { archives javadocJar, sourcesJar }
-
-
     task copyJar(type: Copy, dependsOn: shadowJar) {
         from shadowJar
         into '../build'
     }
 
     shadowJar.finalizedBy copyJar
-
-    signing {
-        sign configurations.archives
-    }
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
-                }
-
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
-                }
-
-                pom.project {
-                    name 'Netherboard'
-                    packaging 'jar'
-                    description 'Scoreboard API for your Minecraft Sponge and Bukkit Plugins.'
-                    url 'https://github.com/MinusKube/Netherboard'
-
-                    scm {
-                        connection 'scm:git:git://github.com/MinusKube/Netherboard.git'
-                        developerConnection 'scm:git:ssh://github.com:MinusKube/Netherboard.git'
-                        url 'http://github.com/MinusKube/Netherboard/tree/master'
-                    }
-
-                    licenses {
-                        license {
-                            name 'GNU General Public License v3.0'
-                            url 'https://www.gnu.org/licenses/gpl-3.0.en.html'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'minuskube'
-                            name 'MinusKube'
-                            email 'minuskube@gmail.com'
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
 
 project(':core') {
     shadowJar {
-        archiveName = 'Netherboard-API-' + project.version + '.jar'
+        archiveFileName = 'Netherboard-API-' + project.version + '.jar'
     }
 
     archivesBaseName = 'netherboard-core'
@@ -101,7 +38,7 @@ project(':core') {
 
 project(':bukkit') {
     shadowJar {
-        archiveName = 'Netherboard-Bukkit-' + project.version + '.jar'
+        archiveFileName = 'Netherboard-Bukkit-' + project.version + '.jar'
     }
 
     archivesBaseName = 'netherboard-bukkit'
@@ -120,7 +57,7 @@ project(':bukkit') {
 
 project(':sponge') {
     shadowJar {
-        archiveName = 'Netherboard-Sponge-' + project.version + '.jar'
+        archiveFileName = 'Netherboard-Sponge-' + project.version + '.jar'
     }
 
     archivesBaseName = 'netherboard-sponge'
@@ -133,5 +70,62 @@ project(':sponge') {
         compileOnly 'org.spongepowered:spongeapi:5.1.0'
 
         api project(':core')
+    }
+}
+
+subprojects {
+    apply plugin: 'signing'
+    apply plugin: 'maven-publish'
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = archivesBaseName
+
+                pom {
+                    name = 'Netherboard'
+                    description = 'Scoreboard API for your Minecraft Sponge and Bukkit Plugins.'
+                    url = 'https://github.com/MinusKube/Netherboard'
+
+                    licenses {
+                        license {
+                            name = 'Apache License v2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'minuskube'
+                            name = 'MinusKube'
+                            email = 'minuskube@gmail.com'
+                        }
+                    }
+
+                    scm {
+                        connection = 'scm:git:git://github.com/MinusKube/Netherboard.git'
+                        developerConnection = 'scm:git:ssh://github.com:MinusKube/Netherboard.git'
+                        url = 'http://github.com/MinusKube/Netherboard/tree/master'
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                def releasesRepoUrl = layout.buildDirectory.dir('https://oss.sonatype.org/service/local/staging/deploy/maven2/')
+                def snapshotsRepoUrl = layout.buildDirectory.dir('https://oss.sonatype.org/content/repositories/snapshots/')
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            }
+        }
+    }
+
+    signing {
+        sign publishing.publications.mavenJava
     }
 }
