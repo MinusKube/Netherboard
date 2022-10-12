@@ -73,15 +73,18 @@ public class NMS {
             Class<?> playerConnectionClass = getClass("net.minecraft.server.network", "PlayerConnection");
             Class<?> packetClass = getClass("net.minecraft.network.protocol", "Packet");
 
-
             sbScore = scoreClass.getConstructor(sbClass, objClass, String.class);
-            sbScoreSet = scoreClass.getMethod("setScore", int.class);
-
             packetObj = packetObjClass.getConstructor(objClass, int.class);
-
             packetDisplay = packetDisplayClass.getConstructor(int.class, objClass);
 
-            sendPacket = playerConnectionClass.getMethod("sendPacket", packetClass);
+            if (VERSION.isBelow1_18()) {
+                sbScoreSet = scoreClass.getMethod("setScore", int.class);
+                sendPacket = playerConnectionClass.getMethod("sendPacket", packetClass);
+            }
+            else {
+                sbScoreSet = scoreClass.getMethod("a", int.class);
+                sendPacket = playerConnectionClass.getMethod("a", packetClass);
+            }
 
             if (VERSION.isBelow1_17()) {
                 playerScores = sbClass.getDeclaredField("playerScores");
@@ -158,9 +161,7 @@ public class NMS {
 
         if(!HANDLES.containsKey(clazz)) {
             Method method = clazz.getDeclaredMethod("getHandle");
-
-            if(!method.isAccessible())
-                method.setAccessible(true);
+            method.setAccessible(true);
 
             HANDLES.put(clazz, method);
         }
@@ -211,6 +212,10 @@ public class NMS {
                     major.equals("1.14") ||
                     major.equals("1.15") ||
                     major.equals("1.16");
+        }
+
+        public boolean isBelow1_18() {
+            return major.equals("1.17") || isBelow1_17();
         }
 
     }
